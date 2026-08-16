@@ -101,7 +101,7 @@
         <div class="flex items-center gap-4 text-xs text-slate-700 font-mono">
           <span><i class="fas fa-code-branch mr-1"></i>v1.4.0</span>
           <span><i class="fas fa-server mr-1"></i>{{ $t('footer.cloudflareEdge') }}</span>
-          <a href="https://csr.plus/monitorflare" target="_blank" rel="noopener"
+          <a href="https://monitorflare.csr.plus/" target="_blank" rel="noopener"
             class="flex items-center gap-1.5 text-slate-500 hover:text-green-400 transition-colors not-italic">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M3 12h4l2-7 3 14 2-7h7"/>

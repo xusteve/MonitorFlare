@@ -5,7 +5,7 @@
         <div class="w-1 h-1 rounded-full bg-emerald-500/40"></div>
         <p>&copy; {{ new Date().getFullYear() }} <a :href="footerUrl" target="_blank" class="hover:text-slate-700 dark:hover:text-slate-400 transition-colors">{{ footerAuthor }}</a>. {{ $t('footer.allRightsReserved') }}</p>
       </div>
-      <a href="https://csr.plus/monitorflare" target="_blank" rel="noopener"
+      <a href="https://monitorflare.csr.plus/" target="_blank" rel="noopener"
         class="flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-600 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
         <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
           <path d="M3 12h4l2-7 3 14 2-7h7"/>

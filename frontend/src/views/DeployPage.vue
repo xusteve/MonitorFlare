@@ -13,7 +13,7 @@
           <span class="font-bold text-slate-900 dark:text-white tracking-tight">MonitorFlare</span>
         </router-link>
         <div class="flex items-center gap-3">
-          <a href="https://csr.plus/monitorflare" target="_blank" rel="noopener"
+          <a href="https://monitorflare.csr.plus/" target="_blank" rel="noopener"
             class="text-xs text-slate-500 dark:text-slate-400 hover:text-emerald-500 transition-colors">{{ $t('deployPage.docs') }}</a>
           <button @click="toggleTheme" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-all cursor-pointer">
             <i :class="isDark ? 'fas fa-sun text-sm' : 'fas fa-moon text-sm'"></i>
@@ -73,7 +73,7 @@
     <footer class="border-t border-black/[0.06] dark:border-white/[0.04] py-6">
       <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-600">
         <p>&copy; {{ new Date().getFullYear() }} MonitorFlare. {{ $t('deployPage.openSource') }}</p>
-        <a href="https://csr.plus/monitorflare" target="_blank" rel="noopener"
+        <a href="https://monitorflare.csr.plus/" target="_blank" rel="noopener"
           class="flex items-center gap-1.5 text-slate-400 dark:text-slate-600 hover:text-emerald-500 transition-colors">
           <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <path d="M3 12h4l2-7 3 14 2-7h7"/>
