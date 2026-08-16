@@ -1,45 +1,48 @@
 # MonitorFlare
 
-> 零服务器成本的网站监控 + 公开状态页,全部运行在 Cloudflare 免费额度内。
-> 基于 [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor)(MIT)分发的增强版。
+> **Zero-cost website monitoring + public status page, running entirely on the Cloudflare free tier.**
+> An enhanced fork of [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor) (MIT).
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 **README Languages**: English | [中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
+
+MonitorFlare is a self-hosted uptime monitoring platform with a beautiful public status page. It runs **completely free** on Cloudflare Workers, D1, and Pages — no servers, no VPS, no monthly costs.
 
 ---
 
 ## ✨ Features
 
-### Monitoring
-- **HTTP / HTTPS** — GET/POST, custom headers, request body, keyword validation
+### 📡 Monitoring
+- **HTTP / HTTPS** — GET / POST / PUT / HEAD, custom headers, request body, keyword validation
 - **DNS** — record existence & value checks (A / AAAA / CNAME / MX / TXT / NS) via DoH
-- **TCP Port** — port reachability via Workers TCP Socket API
+- **TCP Port** — port reachability via the Workers TCP Socket API
 - **SSL certificate & domain expiry** detection (crt.sh + rdap.org)
-- **Error rate threshold** alerts, **consecutive-failure** alert escalation
-- Configurable check intervals, pause/resume, tags, drag-sort
+- **Error-rate threshold** alerts and **consecutive-failure** escalation
+- Configurable check intervals, pause/resume, tags, drag-and-drop sorting
 
-### Notifications (9 channels)
-- DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / generic Webhook
+### 🔔 Notifications (9 channels)
+- DingTalk · WeCom (WeChat Work) · Feishu (Lark) · Telegram · Slack · Discord · ntfy · generic Webhook
 - **Email with 5 providers**: Resend · SendGrid · Mailgun · Postmark · AWS SES
-- Per-channel enable/disable, test message, secret masking
+- Per-channel enable/disable, test messages, secret masking
 
-### Status Page
-- Public status page with tag groups, incident timeline, scheduled maintenance
-- **Subscribe by email** to incident updates, **RSS/Atom feed**
-- Custom branding: logo, title, description, themes (dark/light)
-- **PWA**: installable, offline-ready
+### 📊 Status Page
+- Public status page with tag groups, incident timeline, and scheduled maintenance
+- **Subscribe by email** to incident updates + **RSS/Atom feed**
+- Custom branding: logo, title, description, dark/light themes
+- **PWA** — installable and offline-ready
 
-### Internationalization
+### 🌍 Internationalization
 - **9 languages**: English · 简体中文 · 繁體中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
-- Configurable timezone for all timestamps & alerts
+- Configurable timezone for all timestamps and alert messages
 
-### Platform
-- **One-click deploy** via Deploy to Cloudflare button — no CLI needed
-- **Auto-initialization**: D1 schema created automatically on first request
-- **One-click sign-in**: Admin API key · Email magic link · Google · GitHub · Cloudflare Access
+### ⚙️ Platform
+- **One-click deploy** via the Deploy to Cloudflare button — no CLI needed
+- **Auto-initialization**: D1 schema created on first request
+- **Multiple sign-in methods**: admin API key · email magic link · Google · GitHub · Cloudflare Access
 - **Open API**: `GET /api/status`, `GET /feed.xml`, inbound webhooks
-- **Backup & restore** (JSON export, optional R2 daily backup)
+- **Backup & restore** (JSON export, optional R2 daily backups)
 - API keys for third-party integrations
 
 ---
@@ -50,43 +53,46 @@
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
-1. Click the button, sign in to Cloudflare
+1. Click the button and sign in to Cloudflare
 2. Set `ADMIN_API_KEY` (your admin password) when prompted
 3. Deploy — the Worker auto-creates the D1 database schema on first visit
-4. Open the Pages URL (frontend) → status page is live
+4. Open the Pages URL → your status page is live
 
-### Option A+: One-click via Cloudflare OAuth (`/deploy` page)
+### Option B: GitHub Actions (CI/CD)
 
-The frontend ships with a **`/deploy` landing page** (e.g. `https://monitorflare.csr.plus/deploy`).
-It offers two deployment paths:
+Fork this repository and add the following secrets and variables in
+`Settings → Secrets and variables → Actions`:
 
-- **Deploy via GitHub** — the official Deploy to Cloudflare button above.
-- **Deploy with Cloudflare (OAuth)** — full zero-config flow: user authorizes once,
-  the `deployer/` service auto-creates the D1 database, deploys the Worker and Pages,
-  and configures everything. See [`deployer/README`](deployer/README.md) for setup
-  (register an OAuth client, run `build-artifacts.sh`, deploy the deployer Worker).
-
-### Option B: GitHub Actions
-
-Fork this repo, then add secrets:
+**Secrets**
 
 | Secret | Required | Description |
 |---|---|---|
-| `CLOUDFLARE_API_TOKEN` | ✅ | Cloudflare API token (Workers/Pages/D1 edit) |
-| `CLOUDFLARE_ACCOUNT_ID` | ✅ | Cloudflare account ID |
-| `D1_DATABASE_ID` | ✅ | D1 database ID |
-| `ADMIN_API_KEY` | ✅ | Admin password |
-| `MAGIC_LINK_SECRET` | optional | Magic link signing key |
-| `VITE_CF_ANALYTICS_TOKEN` | optional | Cloudflare Web Analytics |
+| `CLOUDFLARE_API_TOKEN` | ✅ | Cloudflare API token (Workers / Pages / D1 edit) |
+| `CLOUDFLARE_ACCOUNT_ID` | ✅ | Your Cloudflare account ID |
+| `D1_DATABASE_ID` | ✅ | D1 database ID (create one first under Workers & Pages → D1) |
+| `ADMIN_API_KEY` | ✅ | Admin password for your dashboard |
+| `MAGIC_LINK_SECRET` | optional | Signing key for email magic-link login |
+| `VITE_CF_ANALYTICS_TOKEN` | optional | Cloudflare Web Analytics token |
 
-Vars: `ALLOWED_ORIGIN`, `SESSION_TTL_HOURS`, `BASE_URL`, `VITE_FOOTER_AUTHOR`, `VITE_FOOTER_URL`
+**Variables**
 
-Push to `main` → both Worker and Pages deploy automatically.
+| Variable | Example |
+|---|---|
+| `ALLOWED_ORIGIN` | `https://<project>.pages.dev` |
+| `SESSION_TTL_HOURS` | `12` |
+| `BASE_URL` | `https://<project>.pages.dev` |
+| `VITE_FOOTER_AUTHOR` | `MonitorFlare` |
+| `VITE_FOOTER_URL` | `https://github.com/xusteve/MonitorFlare` |
+
+Push to `main` → both the Worker and the Pages site deploy automatically.
+
+> ⚠️ Make sure `D1_DATABASE_ID` is filled in **before** the first run — the CI
+> script will not backfill it automatically.
 
 ### Option C: Local / manual
 
 ```bash
-# 1. Worker
+# 1. Worker (backend)
 cd worker
 npm install
 cp wrangler.example.toml wrangler.toml   # fill in database_id & vars
@@ -115,12 +121,12 @@ Browser / PWA ──► Cloudflare Pages (Vue 3 + i18n + PWA)
               Cloudflare Worker (Hono)
                     │  cron: every minute
                     ▼
-              D1 (monitors / logs / incidents / settings / channels / subscriptions / api_keys)
-              R2 (optional daily backups)
+      D1 (monitors / logs / incidents / settings / channels / subscriptions / api_keys)
+      R2 (optional daily backups)
 ```
 
-- **Zero server cost** — all within Cloudflare free tier
-- Single repo, two modes: self-hosted open source & future hosted SaaS
+- **Zero server cost** — everything runs within the Cloudflare free tier
+- Single repository, two modes: self-hosted open source & hosted SaaS (future)
 
 ---
 
@@ -134,6 +140,12 @@ cd worker && npm run dev          # http://127.0.0.1:8787
 cd frontend && npm run dev        # http://localhost:5173 (proxies /api → 8787)
 ```
 
+> Requires Node.js ≥ 22.
+
+---
+
 ## 📄 License
 
-MIT — see [LICENSE](LICENSE). Upstream: [nianshu2022/Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor) (MIT).
+MIT — see [LICENSE](LICENSE).
+
+Upstream project: [nianshu2022/Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor) (MIT).
