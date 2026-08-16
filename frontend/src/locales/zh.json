@@ -103,7 +103,8 @@
     "allRightsReserved": "版权所有。",
     "cloudflareEdge": "Cloudflare 边缘网络",
     "admin": "管理后台",
-    "credit": "基于 Uptime-Monitor (MIT)"
+    "credit": "基于 Uptime-Monitor (MIT)",
+    "github": "GitHub 仓库"
   },
   "login": {
     "title": "管理后台",

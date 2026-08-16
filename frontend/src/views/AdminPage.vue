@@ -115,6 +115,10 @@
             </svg>
             {{ $t('footer.credit') }}
           </a>
+          <a href="https://github.com/xusteve/MonitorFlare" target="_blank" rel="noopener" :title="$t('footer.github')" :aria-label="$t('footer.github')"
+            class="flex items-center text-slate-500 hover:text-green-400 transition-colors not-italic">
+            <i class="fa-brands fa-github text-sm"></i>
+          </a>
         </div>
       </div>
     </footer>

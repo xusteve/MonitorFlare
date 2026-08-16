@@ -103,7 +103,8 @@
     "allRightsReserved": "版權所有。",
     "cloudflareEdge": "Cloudflare 邊緣網路",
     "admin": "管理後臺",
-    "credit": "基於 Uptime-Monitor (MIT)"
+    "credit": "基於 Uptime-Monitor (MIT)",
+    "github": "GitHub 儲存庫"
   },
   "login": {
     "title": "管理後臺",

@@ -103,7 +103,8 @@
     "allRightsReserved": "無断転載を禁じます。",
     "cloudflareEdge": "Cloudflare Edge",
     "admin": "管理",
-    "credit": "Uptime-Monitor (MIT) をベースに開発"
+    "credit": "Uptime-Monitor (MIT) をベースに開発",
+    "github": "GitHub リポジトリ"
   },
   "login": {
     "title": "管理コンソール",

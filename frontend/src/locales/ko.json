@@ -103,7 +103,8 @@
     "allRightsReserved": "판권 소유.",
     "cloudflareEdge": "Cloudflare Edge",
     "admin": "관리자",
-    "credit": "Uptime-Monitor (MIT) 기반"
+    "credit": "Uptime-Monitor (MIT) 기반",
+    "github": "GitHub 저장소"
   },
   "login": {
     "title": "관리 콘솔",

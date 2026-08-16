@@ -103,7 +103,8 @@
     "allRightsReserved": "Todos los derechos reservados.",
     "cloudflareEdge": "Cloudflare Edge",
     "admin": "Admin",
-    "credit": "Basado en Uptime-Monitor (MIT)"
+    "credit": "Basado en Uptime-Monitor (MIT)",
+    "github": "Repositorio de GitHub"
   },
   "login": {
     "title": "Consola de administración",

@@ -19,6 +19,10 @@
         </svg>
         {{ $t('footer.credit') }}
       </a>
+      <a href="https://github.com/xusteve/MonitorFlare" target="_blank" rel="noopener" :title="$t('footer.github')" :aria-label="$t('footer.github')"
+        class="flex items-center text-[11px] text-slate-400 dark:text-slate-600 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">
+        <i class="fa-brands fa-github text-sm"></i>
+      </a>
       <div class="flex items-center gap-5 font-mono">
         <button @click="$emit('refresh')" :disabled="loading" class="flex items-center gap-1.5 text-slate-500 dark:text-slate-500 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors cursor-pointer disabled:opacity-40" :title="$t('footer.refresh')">
           <svg :class="{'refresh-spin': refreshing}" class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182M2.985 19.644l3.181-3.183"/></svg>
