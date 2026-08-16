@@ -34,5 +34,3 @@ design-system/
 # IDE
 .idea/
 
-# Managed via GitHub web UI (needs workflow scope on push)
-.github/workflows/
