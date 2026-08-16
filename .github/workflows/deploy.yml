@@ -1,0 +1,114 @@
+name: Deploy monitorflare
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy-worker:
+    name: Deploy Worker (Backend)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: worker/package-lock.json
+
+      - name: Install dependencies
+        working-directory: worker
+        run: npm ci
+
+      # 自动创建 D1 数据库(若不存在),消除手动建库门槛
+      - name: Create D1 database (if not exists)
+        working-directory: worker
+        continue-on-error: true
+        run: npx wrangler d1 create monitorflare-db --no-bundle
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Generate wrangler.toml
+        working-directory: worker
+        run: |
+          cat > wrangler.toml << 'WRANGLER_EOF'
+          name = "monitorflare-worker"
+          main = "src/index.ts"
+          compatibility_date = "2024-02-08"
+
+          [triggers]
+          crons = ["* * * * *"]
+          WRANGLER_EOF
+
+          echo '' >> wrangler.toml
+          echo '[[d1_databases]]' >> wrangler.toml
+          echo 'binding = "DB"' >> wrangler.toml
+          echo 'database_name = "monitorflare-db"' >> wrangler.toml
+          echo 'database_id = "${{ secrets.D1_DATABASE_ID }}"' >> wrangler.toml
+          echo '' >> wrangler.toml
+          echo '[vars]' >> wrangler.toml
+          echo 'ADMIN_API_KEY = "${{ secrets.ADMIN_API_KEY }}"' >> wrangler.toml
+          echo 'ALLOWED_ORIGIN = "${{ vars.ALLOWED_ORIGIN }}"' >> wrangler.toml
+          echo 'SESSION_TTL_HOURS = "${{ vars.SESSION_TTL_HOURS }}"' >> wrangler.toml
+          echo 'MAGIC_LINK_SECRET = "${{ secrets.MAGIC_LINK_SECRET }}"' >> wrangler.toml
+          echo 'BASE_URL = "${{ vars.BASE_URL }}"' >> wrangler.toml
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          command: deploy
+
+  deploy-pages:
+    name: Deploy Pages (Frontend)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+        env:
+          VITE_CF_ANALYTICS_TOKEN: ${{ secrets.VITE_CF_ANALYTICS_TOKEN }}
+          VITE_FOOTER_AUTHOR: ${{ vars.VITE_FOOTER_AUTHOR }}
+          VITE_FOOTER_URL: ${{ vars.VITE_FOOTER_URL }}
+
+      - name: Create Pages project (if not exists)
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages project create monitorflare --production-branch=main
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy frontend/dist --project-name=monitorflare --branch=main --commit-dirty=true

@@ -1,0 +1,29 @@
+name = "monitorflare-deployer"
+main = "src/index.ts"
+compatibility_date = "2024-02-08"
+
+# KV:存储授权 state 与部署记录
+[[kv_namespaces]]
+binding = "KV"
+id = "your-kv-namespace-id"
+
+# R2:构建产物(worker bundle + frontend dist)
+[[r2_buckets]]
+binding = "ARTIFACTS"
+bucket_name = "monitorflare-artifacts"
+
+[vars]
+# Cloudflare OAuth 应用凭证(Dashboard → Manage Account → OAuth clients)
+OAUTH_CLIENT_ID = "your-oauth-client-id"
+OAUTH_CLIENT_SECRET = "your-oauth-client-secret"
+# 授权范围(按注册 OAuth 应用时选择的 scopes 填写,逗号分隔)
+OAUTH_SCOPE = "workers_scripts:write,d1:write,cloudflare_pages:write,account_settings:read"
+# 回调地址,必须与 OAuth 应用注册的 Redirect URL 完全一致
+REDIRECT_URI = "https://monitorflare.csr.plus/api/deploy/callback"
+# state 签名密钥(随机长字符串)
+STATE_SECRET = "your-random-state-secret"
+# 部署到用户账号的资源名
+SCRIPT_NAME = "monitorflare"
+# R2 产物 key
+WORKER_BUNDLE_KEY = "monitorflare/worker.mjs"
+FRONTEND_PREFIX = "monitorflare/frontend/"

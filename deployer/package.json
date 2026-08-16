@@ -1,0 +1,21 @@
+{
+  "name": "monitorflare-deployer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MonitorFlare one-click deploy service (Cloudflare Worker)",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev --ip 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "build:artifacts": "bash build-artifacts.sh"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260607.1",
+    "esbuild": "^0.25.0",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.98.0"
+  },
+  "dependencies": {
+    "hono": "^4.12.23"
+  }
+}

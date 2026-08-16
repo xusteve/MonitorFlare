@@ -1,0 +1,41 @@
+name = "monitorflare-worker"
+main = "src/index.ts"
+compatibility_date = "2024-02-08"
+
+# 定时任务:每分钟触发一次
+[triggers]
+crons = ["* * * * *"]
+
+# D1 数据库(首次访问自动初始化表结构)
+# 运行: npx wrangler d1 create monitorflare-db 获取 database_id
+[[d1_databases]]
+binding = "DB"
+database_name = "monitorflare-db"
+database_id = "your-d1-database-id-here"
+
+# R2 备份桶(可选,用于每日自动备份)
+# [[r2_buckets]]
+# binding = "R2"
+# bucket_name = "monitorflare-backups"
+
+[vars]
+# 管理员认证(二选一,API Key 优先)
+ADMIN_API_KEY = "your-admin-key"
+# ADMIN_PASSWORD = "your-admin-password"
+ALLOWED_ORIGIN = "https://monitorflare.pages.dev"
+SESSION_TTL_HOURS = "12"
+
+# Magic Link 签名密钥(可选,用于邮件登录)
+# MAGIC_LINK_SECRET = "your-magic-link-secret"
+
+# OAuth(可选)
+# GOOGLE_CLIENT_ID = "xxx.apps.googleusercontent.com"
+# GOOGLE_CLIENT_SECRET = "xxx"
+# GITHUB_CLIENT_ID = "xxx"
+# GITHUB_CLIENT_SECRET = "xxx"
+
+# Cloudflare Access 集成(可选)
+# CF_ACCESS_AUD = "your-audience-tag"
+
+# 站点基础 URL(用于 Magic Link / OAuth 回调 / RSS)
+# BASE_URL = "https://monitorflare.pages.dev"

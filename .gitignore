@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Cloudflare Wrangler
+.wrangler/
+**/.wrangler/
+
+# Environment variables
+.dev.vars
+.env
+.env.local
+frontend/.env
+frontend/.env.local
+
+# Local Dev worker config
+worker/wrangler.toml
+
+# Frontend build output
+frontend/dist/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Worker build output
+worker/dist/
+
+# Local-only files
+.agent/
+posts/
+design-system/
+
+# IDE
+.idea/
