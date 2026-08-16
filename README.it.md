@@ -3,7 +3,7 @@
 > Monitoraggio di siti web a costo server zero + pagina di stato pubblica, tutto nella fascia gratuita di Cloudflare.
 > Versione potenziata distribuita a partire da [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor) (MIT).
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 **Lingue del README**: [English](README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | Italiano | [Español](README.es.md)
 
@@ -48,7 +48,7 @@
 
 ### Opzione A: Un clic (consigliata)
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 1. Fai clic sul pulsante e accedi a Cloudflare
 2. Imposta `ADMIN_API_KEY` (la tua password di amministratore) quando richiesto

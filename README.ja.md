@@ -3,7 +3,7 @@
 > サーバー費用ゼロのWebサイト監視 + 公開ステータスページ。すべて Cloudflare の無料枠内で動作します。
 > [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor)(MIT)を基に配布される強化版です。
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 **README 言語**: [English](README.md) | [中文](README.zh.md) | 日本語 | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
@@ -48,7 +48,7 @@
 
 ### オプション A:ワンクリック(推奨)
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 1. ボタンをクリックして Cloudflare にログイン
 2. プロンプトに従って `ADMIN_API_KEY`(管理者パスワード)を設定

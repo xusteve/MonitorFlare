@@ -3,7 +3,7 @@
 > 零服务器成本的网站监控 + 公开状态页,全部运行在 Cloudflare 免费额度内。
 > 基于 [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor)(MIT)分发的增强版。
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 **README Languages**: English | [中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
@@ -31,7 +31,7 @@
 - **PWA**: installable, offline-ready
 
 ### Internationalization
-- **8 languages**: English · 中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
+- **9 languages**: English · 简体中文 · 繁體中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
 - Configurable timezone for all timestamps & alerts
 
 ### Platform
@@ -48,7 +48,7 @@
 
 ### Option A: One-click (recommended)
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 1. Click the button, sign in to Cloudflare
 2. Set `ADMIN_API_KEY` (your admin password) when prompted

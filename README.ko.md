@@ -3,7 +3,7 @@
 > 서버 비용 제로 웹사이트 모니터링 + 공개 상태 페이지, 모두 Cloudflare 무료 티어에서 실행됩니다.
 > [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor)(MIT) 기반으로 배포되는 강화판입니다.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 **README 언어**: [English](README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | 한국어 | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | [Español](README.es.md)
 
@@ -48,7 +48,7 @@
 
 ### 옵션 A:원클릭(권장)
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/monitorflare)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
 
 1. 버튼을 클릭하고 Cloudflare에 로그인
 2. 프롬프트에 따라 `ADMIN_API_KEY`(관리자 비밀번호)를 설정
