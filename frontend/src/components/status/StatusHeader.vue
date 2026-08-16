@@ -1,20 +1,20 @@
 <template>
   <header class="sticky top-0 z-40 border-b border-black/[0.06] dark:border-white/[0.04] transition-colors duration-300"
     :style="isDark ? 'background:rgba(3,7,18,0.8);backdrop-filter:blur(24px) saturate(1.5)' : 'background:rgba(255,255,255,0.8);backdrop-filter:blur(24px) saturate(1.5)'">
-    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-      <router-link to="/" class="flex items-center gap-3 group">
-        <div class="relative">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+      <router-link to="/" class="flex items-center gap-2 sm:gap-3 group min-w-0">
+        <div class="relative shrink-0">
           <img v-if="siteSettings.site_logo_url" :src="siteSettings.site_logo_url" alt="Logo" class="w-8 h-8 rounded-lg object-contain transition-opacity group-hover:opacity-80" @error="siteSettings.site_logo_url = '/logo.svg'">
           <img v-else src="/logo.svg" alt="Logo" class="w-8 h-8 rounded-lg object-contain transition-opacity group-hover:opacity-80">
         </div>
-        <div>
-          <span class="font-bold text-slate-900 dark:text-white tracking-tight text-[15px] group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">{{ siteSettings.site_title || 'MonitorFlare' }}</span>
-          <p class="text-[11px] text-slate-400 dark:text-slate-500 font-mono -mt-0.5 tracking-wider truncate max-w-[200px]">{{ siteSettings.site_description || $t('statusHeader.statusPage') }}</p>
+        <div class="min-w-0">
+          <span class="font-bold text-slate-900 dark:text-white tracking-tight text-[15px] group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate block max-w-[110px] sm:max-w-none">{{ siteSettings.site_title || 'MonitorFlare' }}</span>
+          <p class="hidden sm:block text-[11px] text-slate-400 dark:text-slate-500 font-mono -mt-0.5 tracking-wider truncate max-w-[200px]">{{ siteSettings.site_description || $t('statusHeader.statusPage') }}</p>
         </div>
       </router-link>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1 sm:gap-4 shrink-0">
         <!-- LIVE 指示 -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full glass text-xs">
+        <div class="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-3 py-1.5 rounded-full glass text-xs">
           <div class="relative">
             <span v-if="!loading" class="w-1.5 h-1.5 rounded-full bg-emerald-400 block"></span>
             <span v-if="!loading" class="pulse-ring bg-emerald-400/30 block"></span>
@@ -23,13 +23,13 @@
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
             </svg>
           </div>
-          <span class="font-mono text-slate-500 dark:text-slate-400">{{ loading ? $t('statusHeader.syncing') : $t('statusHeader.live') }}</span>
+          <span class="hidden sm:inline font-mono text-slate-500 dark:text-slate-400">{{ loading ? $t('statusHeader.syncing') : $t('statusHeader.live') }}</span>
         </div>
         <!-- 语言切换 -->
         <div class="relative">
-          <button @click="langOpen = !langOpen" class="flex items-center gap-1.5 h-8 px-2.5 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-all cursor-pointer">
+          <button @click="langOpen = !langOpen" class="flex items-center gap-1 h-8 px-1.5 sm:px-2.5 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-all cursor-pointer">
             <i class="fas fa-globe text-[11px]"></i>
-            <span>{{ $t('languages.' + locale) }}</span>
+            <span class="hidden sm:inline">{{ $t('languages.' + locale) }}</span>
             <i class="fas fa-chevron-down text-[8px]"></i>
           </button>
           <div v-if="langOpen" class="absolute right-0 mt-1.5 w-40 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 shadow-xl overflow-hidden z-50">
