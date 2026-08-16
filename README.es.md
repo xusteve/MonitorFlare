@@ -4,7 +4,7 @@
 > Versión mejorada distribuida a partir de [Uptime-Monitor](https://github.com/nianshu2022/Uptime-Monitor) (MIT).
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/xusteve/MonitorFlare)
-[![Uptime Status](https://monitorflare.csr.plus/uptime-badge.png)](https://uptime.csr.plus/)
+<a href="https://uptime.csr.plus/"><img src="https://monitorflare.csr.plus/uptime-badge.png" height="28" alt="Uptime Status"></a>
 
 **Idiomas del README**: [English](README.md) | [中文](README.zh.md) | [日本語](README.ja.md) | [한국어](README.ko.md) | [Deutsch](README.de.md) | [Français](README.fr.md) | [Italiano](README.it.md) | Español
 
