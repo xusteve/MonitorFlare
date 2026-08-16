@@ -12,9 +12,25 @@
             <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
               <i class="fas fa-lock text-lg text-emerald-400"></i>
             </div>
-            <div class="min-w-0">
+            <div class="min-w-0 flex-1">
               <h2 class="text-2xl font-bold text-white tracking-tight">{{ $t('login.title') }}</h2>
               <p class="text-slate-400 text-sm mt-1">{{ $t('login.subtitle') }}</p>
+            </div>
+            <!-- 语言切换 -->
+            <div class="relative shrink-0">
+              <button @click="langOpen = !langOpen" class="flex items-center gap-1 h-8 px-2.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-white/10 transition-all cursor-pointer" :title="$t('adminHeader.language')">
+                <i class="fas fa-globe text-[11px]"></i>
+                <span class="hidden sm:inline">{{ $t('languages.' + locale) }}</span>
+                <i class="fas fa-chevron-down text-[8px]"></i>
+              </button>
+              <div v-if="langOpen" class="absolute right-0 mt-1.5 w-40 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 shadow-xl overflow-hidden z-50">
+                <button v-for="l in langList" :key="l" @click="changeLang(l)"
+                  class="w-full flex items-center justify-between px-3.5 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/[0.05] cursor-pointer"
+                  :class="{ 'font-bold text-green-600 dark:text-emerald-400': l === locale }">
+                  {{ $t('languages.' + l) }}
+                  <i v-if="l === locale" class="fas fa-check text-[9px]"></i>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -62,10 +78,22 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { setAppLanguage } from '../../main';
 import { useAuth } from '../../composables/useAuth';
 const emit = defineEmits(['login']);
 const { inputPassword, loginError, loggingIn, login } = useAuth();
 const doLogin = () => login(() => emit('login'));
+
+const { locale } = useI18n();
+const langOpen = ref(false);
+const langList = ['en', 'zh', 'zh-tw', 'ja', 'ko', 'de', 'fr', 'it', 'es'];
+const changeLang = (l) => {
+    setAppLanguage(l);
+    locale.value = l;
+    langOpen.value = false;
+};
 </script>
 
 <style scoped>
