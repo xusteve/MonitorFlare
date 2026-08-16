@@ -601,9 +601,9 @@ app.put('/settings', async (c) => {
 app.get('/health', async (c) => {
   try {
     const row = await c.env.DB.prepare('SELECT 1 as ok').first();
-    return c.json({ status: 'ok', db: !!row });
+    return c.json({ status: 'ok', db: !!row, ok: !!row });
   } catch (e: unknown) {
-    return c.json({ status: 'error', db: false, error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+    return c.json({ status: 'error', db: false, ok: false, error: e instanceof Error ? e.message : 'Unknown error' }, 500);
   }
 });
 
