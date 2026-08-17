@@ -93,7 +93,8 @@
     "type": {
       "http": "HTTP-Check",
       "dns": "DNS-Check",
-      "port": "Port-Check"
+      "port": "Port-Check",
+      "ssl": "SSL-Prüfung"
     }
   },
   "uptimeBar": {

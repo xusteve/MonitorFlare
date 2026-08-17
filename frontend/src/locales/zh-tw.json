@@ -93,7 +93,8 @@
     "type": {
       "http": "HTTP 檢查",
       "dns": "DNS 檢查",
-      "port": "端口檢查"
+      "port": "端口檢查",
+      "ssl": "SSL 檢查"
     }
   },
   "uptimeBar": {

@@ -93,7 +93,8 @@
     "type": {
       "http": "Controllo HTTP",
       "dns": "Controllo DNS",
-      "port": "Controllo porta"
+      "port": "Controllo porta",
+      "ssl": "Controllo SSL"
     }
   },
   "uptimeBar": {

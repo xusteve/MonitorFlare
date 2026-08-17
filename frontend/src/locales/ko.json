@@ -93,7 +93,8 @@
     "type": {
       "http": "HTTP 확인",
       "dns": "DNS 확인",
-      "port": "포트 확인"
+      "port": "포트 확인",
+      "ssl": "SSL 확인"
     }
   },
   "uptimeBar": {

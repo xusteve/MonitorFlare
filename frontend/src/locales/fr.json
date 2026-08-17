@@ -93,7 +93,8 @@
     "type": {
       "http": "Vérification HTTP",
       "dns": "Vérification DNS",
-      "port": "Vérification de port"
+      "port": "Vérification de port",
+      "ssl": "Vérification SSL"
     }
   },
   "uptimeBar": {

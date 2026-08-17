@@ -23,7 +23,10 @@
           </div>
           <div class="flex items-center gap-1.5 min-w-0">
             <h3 class="font-bold text-slate-900 dark:text-white text-base truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">{{ monitor.name }}</h3>
-            <i class="fas text-[11px] text-slate-400 dark:text-slate-500 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors shrink-0" :class="typeIcon" :title="$t('monitorCard.type.' + (monitor.type || 'http'))"></i>
+            <span class="type-badge shrink-0" :title="$t('monitorCard.type.' + typeKey)">
+              <span class="type-badge-icon"><i :class="typeIcon"></i></span>
+              <span class="type-badge-label">{{ typeLabel }}</span>
+            </span>
           </div>
         </div>
 
@@ -99,9 +102,59 @@ const sparkline = computed(() => {
     return { line, area, dot: pts[pts.length - 1] };
 });
 
+const typeKey = computed(() => {
+    const t = props.monitor.type || 'http';
+    return t === 'http' && props.monitor.check_ssl === 1 ? 'ssl' : t;
+});
+
 const typeIcon = computed(() => ({
-    http: 'fa-globe',
-    dns: 'fa-circle-nodes',
-    port: 'fa-network-wired',
-}[props.monitor.type] || 'fa-globe'));
+    ssl: 'fa-brands fa-expeditedssl',
+    http: 'fa-solid fa-fingerprint',
+    dns: 'fa-solid fa-globe',
+    port: 'fa-solid fa-server',
+}[typeKey.value] || 'fa-solid fa-fingerprint'));
+
+const typeLabel = computed(() => ({
+    ssl: 'SSL',
+    http: 'HTTP/HTTPS',
+    dns: 'DNS',
+    port: 'TCP',
+}[typeKey.value] || 'HTTP/HTTPS'));
 </script>
+
+<style scoped>
+/* shields.io 风格类型徽章 */
+.type-badge {
+    display: inline-flex;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: 4px;
+    font-family: 'Verdana', 'DejaVu Sans', sans-serif;
+    line-height: 1;
+    vertical-align: middle;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+.type-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    background: #555;
+    color: #fff;
+    font-size: 9px;
+    padding: 3px 4px;
+}
+.type-badge-icon i {
+    font-size: 9px;
+}
+.type-badge-label {
+    background: #007ec6;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 3px 5px;
+    transition: background-color 0.2s ease;
+}
+.group:hover .type-badge-label {
+    background: #10b981;
+}
+</style>
