@@ -234,7 +234,7 @@ app.get('/monitors', async (c) => {
 app.get('/monitors/public', async (c) => {
   try {
     const { results } = await c.env.DB.prepare(
-      'SELECT id, name, url, type, status, last_check, cert_expiry, domain_expiry, paused, tags FROM monitors ORDER BY sort_order ASC, created_at ASC'
+      'SELECT id, name, url, type, status, last_check, cert_expiry, domain_expiry, paused, tags, check_ssl FROM monitors ORDER BY sort_order ASC, created_at ASC'
     ).all();
     return c.json(results);
   } catch (e: unknown) {
@@ -246,7 +246,7 @@ app.get('/monitors/public', async (c) => {
 app.get('/monitors/public/details', async (c) => {
   try {
     const { results: monitors } = await c.env.DB.prepare(
-      'SELECT id, name, url, type, status, last_check, cert_expiry, domain_expiry, paused, tags FROM monitors ORDER BY sort_order ASC, created_at ASC'
+      'SELECT id, name, url, type, status, last_check, cert_expiry, domain_expiry, paused, tags, check_ssl FROM monitors ORDER BY sort_order ASC, created_at ASC'
     ).all();
     if (!monitors || monitors.length === 0) return c.json({ monitors: [] });
 
