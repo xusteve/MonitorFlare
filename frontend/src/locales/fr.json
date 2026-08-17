@@ -89,7 +89,12 @@
     "domainExpiry": "Domaine expire dans {days} j",
     "expired": "Expiré",
     "certExpired": "Certificat expiré",
-    "domainExpired": "Domaine expiré"
+    "domainExpired": "Domaine expiré",
+    "type": {
+      "http": "Vérification HTTP",
+      "dns": "Vérification DNS",
+      "port": "Vérification de port"
+    }
   },
   "uptimeBar": {
     "noData": "Aucune donnée",

@@ -21,7 +21,10 @@
               }"></div>
             <div v-if="monitor.status === 'UP' && !monitor.paused" class="absolute inset-0 rounded-full bg-emerald-400/40 pulse-dot"></div>
           </div>
-          <h3 class="font-bold text-slate-900 dark:text-white text-base truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">{{ monitor.name }}</h3>
+          <div class="flex items-center gap-1.5 min-w-0">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">{{ monitor.name }}</h3>
+            <i class="fas text-[11px] text-slate-400 dark:text-slate-500 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-colors shrink-0" :class="typeIcon" :title="$t('monitorCard.type.' + (monitor.type || 'http'))"></i>
+          </div>
         </div>
 
         <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 pl-5">
@@ -95,4 +98,10 @@ const sparkline = computed(() => {
 
     return { line, area, dot: pts[pts.length - 1] };
 });
+
+const typeIcon = computed(() => ({
+    http: 'fa-globe',
+    dns: 'fa-circle-nodes',
+    port: 'fa-network-wired',
+}[props.monitor.type] || 'fa-globe'));
 </script>

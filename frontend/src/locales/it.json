@@ -89,7 +89,12 @@
     "domainExpiry": "Dominio scade tra {days} g",
     "expired": "Scaduto",
     "certExpired": "Certificato scaduto",
-    "domainExpired": "Dominio scaduto"
+    "domainExpired": "Dominio scaduto",
+    "type": {
+      "http": "Controllo HTTP",
+      "dns": "Controllo DNS",
+      "port": "Controllo porta"
+    }
   },
   "uptimeBar": {
     "noData": "Nessun dato",

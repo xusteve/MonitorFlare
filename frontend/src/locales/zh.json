@@ -89,7 +89,12 @@
     "domainExpiry": "域名 {days} 天后到期",
     "expired": "已过期",
     "certExpired": "证书已过期",
-    "domainExpired": "域名已过期"
+    "domainExpired": "域名已过期",
+    "type": {
+      "http": "HTTP 检查",
+      "dns": "DNS 检查",
+      "port": "端口检查"
+    }
   },
   "uptimeBar": {
     "noData": "无数据",

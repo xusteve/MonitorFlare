@@ -89,7 +89,12 @@
     "domainExpiry": "ドメインの期限まで {days} 日",
     "expired": "期限切れ",
     "certExpired": "証明書の期限切れ",
-    "domainExpired": "ドメインの期限切れ"
+    "domainExpired": "ドメインの期限切れ",
+    "type": {
+      "http": "HTTP チェック",
+      "dns": "DNS チェック",
+      "port": "ポートチェック"
+    }
   },
   "uptimeBar": {
     "noData": "データなし",

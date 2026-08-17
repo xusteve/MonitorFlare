@@ -89,7 +89,12 @@
     "domainExpiry": "도메인 만료까지 {days}일",
     "expired": "만료됨",
     "certExpired": "인증서 만료",
-    "domainExpired": "도메인 만료"
+    "domainExpired": "도메인 만료",
+    "type": {
+      "http": "HTTP 확인",
+      "dns": "DNS 확인",
+      "port": "포트 확인"
+    }
   },
   "uptimeBar": {
     "noData": "데이터 없음",

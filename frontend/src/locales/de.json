@@ -89,7 +89,12 @@
     "domainExpiry": "Domain läuft in {days} Tagen ab",
     "expired": "Abgelaufen",
     "certExpired": "Zertifikat abgelaufen",
-    "domainExpired": "Domain abgelaufen"
+    "domainExpired": "Domain abgelaufen",
+    "type": {
+      "http": "HTTP-Check",
+      "dns": "DNS-Check",
+      "port": "Port-Check"
+    }
   },
   "uptimeBar": {
     "noData": "Keine Daten",
