@@ -95,7 +95,8 @@
       "dns": "DNS 확인",
       "port": "포트 확인",
       "ssl": "SSL 확인"
-    }
+    },
+    "sslCheck": "SSL 인증서 확인"
   },
   "uptimeBar": {
     "noData": "데이터 없음",

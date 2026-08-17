@@ -35,6 +35,11 @@
             {{ monitor.url }}
             <svg class="w-2.5 h-2.5 opacity-70 group-hover/link:opacity-100 transition-opacity duration-200 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
           </a>
+          <a v-if="monitor.cert_expiry && sslCheckUrl" :href="sslCheckUrl" target="_blank" rel="noopener"
+            class="flex items-center gap-1 text-[11px] sm:text-[12px] font-mono text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors cursor-pointer shrink-0"
+            :title="$t('monitorCard.sslCheck')">
+            <i class="fa-solid fa-square-check"></i>
+          </a>
           <span class="text-[10px] sm:text-[11px] font-mono text-slate-400 dark:text-slate-600">{{ formatDate(monitor.last_check) }}</span>
           <span v-if="monitor.cert_expiry" class="flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] sm:text-[11px] font-mono border" :class="getExpiryClass(monitor.cert_expiry)">
             <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
@@ -120,6 +125,16 @@ const typeLabel = computed(() => ({
     dns: 'DNS',
     port: 'TCP',
 }[typeKey.value] || 'HTTP/HTTPS'));
+
+const sslCheckUrl = computed(() => {
+    try {
+        const host = new URL(props.monitor.url).hostname;
+        if (!host) return '';
+        return `https://csr.plus/check?domain=${encodeURIComponent(host)}`;
+    } catch {
+        return '';
+    }
+});
 </script>
 
 <style scoped>
@@ -139,19 +154,19 @@ const typeLabel = computed(() => ({
     align-items: center;
     background: #555;
     color: #fff;
-    font-size: 9px;
-    padding: 3px 4px;
+    padding: 3px 5px;
 }
 .type-badge-icon i {
-    font-size: 9px;
+    font-size: 11px;
+    line-height: 1;
 }
 .type-badge-label {
     background: #007ec6;
     color: #fff;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.02em;
-    padding: 3px 5px;
+    padding: 3px 6px;
     transition: background-color 0.2s ease;
 }
 .group:hover .type-badge-label {

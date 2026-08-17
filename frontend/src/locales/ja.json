@@ -95,7 +95,8 @@
       "dns": "DNS チェック",
       "port": "ポートチェック",
       "ssl": "SSL チェック"
-    }
+    },
+    "sslCheck": "SSL証明書を確認"
   },
   "uptimeBar": {
     "noData": "データなし",

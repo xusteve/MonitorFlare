@@ -95,7 +95,8 @@
       "dns": "DNS check",
       "port": "Port check",
       "ssl": "SSL check"
-    }
+    },
+    "sslCheck": "Check SSL certificate"
   },
   "uptimeBar": {
     "noData": "No data",

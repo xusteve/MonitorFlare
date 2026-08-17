@@ -95,7 +95,8 @@
       "dns": "Vérification DNS",
       "port": "Vérification de port",
       "ssl": "Vérification SSL"
-    }
+    },
+    "sslCheck": "Vérifier le certificat SSL"
   },
   "uptimeBar": {
     "noData": "Aucune donnée",

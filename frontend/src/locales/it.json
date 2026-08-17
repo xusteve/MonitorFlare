@@ -95,7 +95,8 @@
       "dns": "Controllo DNS",
       "port": "Controllo porta",
       "ssl": "Controllo SSL"
-    }
+    },
+    "sslCheck": "Controlla certificato SSL"
   },
   "uptimeBar": {
     "noData": "Nessun dato",

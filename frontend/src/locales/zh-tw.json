@@ -95,7 +95,8 @@
       "dns": "DNS 檢查",
       "port": "端口檢查",
       "ssl": "SSL 檢查"
-    }
+    },
+    "sslCheck": "檢查 SSL 憑證"
   },
   "uptimeBar": {
     "noData": "無資料",
