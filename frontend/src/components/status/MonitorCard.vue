@@ -142,37 +142,6 @@ const sslCheckUrl = computed(() => {
 </script>
 
 <style scoped>
-/* shields.io 风格类型徽章 */
-.type-badge {
-    display: inline-flex;
-    align-items: stretch;
-    overflow: hidden;
-    border-radius: 4px;
-    font-family: 'Verdana', 'DejaVu Sans', sans-serif;
-    line-height: 1;
-    vertical-align: middle;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-}
-.type-badge-icon {
-    display: inline-flex;
-    align-items: center;
-    background: #555;
-    color: #fff;
-    padding: 3px 5px;
-}
-.type-badge-icon i {
-    font-size: 11px;
-    line-height: 1;
-}
-.type-badge-label {
-    background: #007ec6;
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    padding: 3px 6px;
-    transition: background-color 0.2s ease;
-}
 .group:hover .type-badge-label {
     background: #10b981;
 }
