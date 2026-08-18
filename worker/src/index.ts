@@ -55,7 +55,7 @@ const STATUS_LOCK_PATHS = [
   '/monitors/public', '/incidents', '/settings', '/feed.xml', '/api/status', '/status', '/api/subscribe', '/api/unsubscribe',
 ];
 // 私密模式下始终放行(登录/管理认证)
-const STATUS_LOCK_EXEMPT = ['/api/status/login', '/auth/', '/webhooks/'];
+const STATUS_LOCK_EXEMPT = ['/status/login', '/api/status/login', '/auth/', '/webhooks/'];
 
 app.use('/*', async (c, next) => {
   if (c.req.method === 'OPTIONS') return await next();
@@ -972,7 +972,7 @@ app.get('/api/status', statusHandler);
 app.get('/status', statusHandler);
 
 // 状态页登录(私密模式):密码换 token
-app.post('/api/status/login', async (c) => {
+const statusLoginHandler = async (c) => {
   try {
     const body = await c.req.json<{ password?: string }>().catch((): { password?: string } => ({}));
     if (!body.password) return c.json({ error: 'Password is required' }, 400);
@@ -985,7 +985,9 @@ app.post('/api/status/login', async (c) => {
   } catch (e: unknown) {
     return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
   }
-});
+};
+app.post('/api/status/login', statusLoginHandler);
+app.post('/status/login', statusLoginHandler);
 
 app.get('/feed.xml', async (c) => {
   try {
