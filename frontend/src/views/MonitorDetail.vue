@@ -313,7 +313,7 @@ const selectRange = (key) => {
 
 const loadSeries = async (r) => {
     if (seriesCache[r]) {
-        latencySeries.value = seriesCache[r];
+        if (range.value === r) latencySeries.value = seriesCache[r];
         return;
     }
     try {
@@ -321,7 +321,7 @@ const loadSeries = async (r) => {
         if (res.ok) {
             const data = await res.json();
             seriesCache[r] = data.latency_series || [];
-            latencySeries.value = seriesCache[r];
+            if (range.value === r) latencySeries.value = seriesCache[r];
         }
     } catch { /* keep old */ }
 };
