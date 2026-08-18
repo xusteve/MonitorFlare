@@ -11,7 +11,7 @@ export const fetchT = (url, opts = {}, ms = 15000) => {
     const t = setTimeout(() => c.abort(), ms);
     const headers = { ...(opts.headers || {}) };
     const token = localStorage.getItem(STATUS_TOKEN_KEY);
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (token && !headers['Authorization']) headers['Authorization'] = `Bearer ${token}`;
     return fetch(url, { ...opts, headers, signal: c.signal }).finally(() => clearTimeout(t));
 };
 
