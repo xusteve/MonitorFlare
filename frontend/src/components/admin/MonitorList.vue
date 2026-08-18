@@ -46,7 +46,10 @@
         </div>
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2 mb-0.5">
-            <h3 class="font-semibold text-slate-900 dark:text-white truncate">{{ m.name }}</h3>
+            <router-link :to="`/monitor/${m.id}`" class="flex items-center gap-1.5 min-w-0 group/name" :title="$t('monitorCard.viewDetails')">
+              <h3 class="font-semibold text-slate-900 dark:text-white truncate group-hover:text-green-500 dark:group-hover:text-emerald-400 transition-colors">{{ m.name }}</h3>
+              <i class="fas fa-external-link-alt text-[9px] opacity-0 group-hover/name:opacity-100 text-green-500 dark:text-emerald-400 transition-opacity shrink-0"></i>
+            </router-link>
             <span class="text-[10px] font-mono text-slate-600 shrink-0">{{ m.method || 'GET' }}</span>
             <span v-if="m.status === 'DOWN'" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 animate-pulse">{{ $t('status.down') }}</span>
             <span v-if="m.status === 'RETRYING'" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-yellow-500/20 text-yellow-400">{{ $t('status.retrying') }}</span>
