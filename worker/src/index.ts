@@ -53,7 +53,8 @@ const PROTECTED_PREFIXES = ['/monitors', '/notification-channels', '/incidents',
 
 // 私密模式下需锁定的公开接口(前缀匹配)
 const STATUS_LOCK_PATHS = [
-  '/monitors/public', '/incidents', '/settings', '/feed.xml', '/api/status', '/status', '/api/subscribe', '/api/unsubscribe',
+  '/monitors/public', '/incidents', '/settings', '/feed.xml', '/api/status', '/status',
+  '/api/subscribe', '/api/unsubscribe', '/subscribe', '/unsubscribe',
 ];
 // 私密模式下始终放行(登录/管理认证)
 const STATUS_LOCK_EXEMPT = ['/status/login', '/api/status/login', '/auth/', '/webhooks/'];
@@ -1039,8 +1040,31 @@ app.post('/api/subscribe', async (c) => {
     return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
   }
 });
+app.post('/subscribe', async (c) => {
+  try {
+    const body = await c.req.json<{ email?: string }>();
+    const email = (body.email || '').trim();
+    if (!isValidEmail(email)) return c.json({ error: 'Valid email is required' }, 400);
+    const token = randomToken(16);
+    await c.env.DB.prepare('INSERT INTO subscriptions (email, token) VALUES (?, ?) ON CONFLICT(email) DO UPDATE SET token = excluded.token')
+      .bind(email, token).run();
+    return c.json({ success: true });
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
 
 app.post('/api/unsubscribe', async (c) => {
+  try {
+    const body = await c.req.json<{ token?: string }>();
+    if (!body.token) return c.json({ error: 'Token is required' }, 400);
+    await c.env.DB.prepare('DELETE FROM subscriptions WHERE token = ?').bind(body.token).run();
+    return c.json({ success: true });
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+app.post('/unsubscribe', async (c) => {
   try {
     const body = await c.req.json<{ token?: string }>();
     if (!body.token) return c.json({ error: 'Token is required' }, 400);
