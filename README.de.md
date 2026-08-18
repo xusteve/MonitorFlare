@@ -19,6 +19,8 @@
 - **SSL-Zertifikat & Domain-Ablauf** erkennen (crt.sh + rdap.org)
 - **Fehlerraten-Schwellwert**-Alarme, **Alarm-Eskalation bei aufeinanderfolgenden Fehlern**
 - Konfigurierbare Prüfintervalle, Pause/Fortsetzen, Tags, Drag-Sortierung
+- **Monitor-Badges im Shields.io-Stil** — SSL / HTTP / HTTPS / DNS / TCP-Typ neben jedem Monitornamen, Hover wird grün (globales CSS, auf Karten & Detailseite wiederverwendet)
+- **SSL-Tiefenprüfung per Klick** — Flaggen-Icon neben jeder Monitor-URL öffnet die SSL-Analyse unter `csr.plus/check?domain=...` (sichtbar, wenn die SSL-Ablaufverfolgung aktiviert ist)
 
 ### Benachrichtigungen (9 Kanäle)
 - DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / generischer Webhook
@@ -30,6 +32,8 @@
 - **E-Mail-Abonnement** für Incident-Updates, **RSS/Atom-Feed**
 - Eigenes Branding: Logo, Titel, Beschreibung, Themes (dunkel/hell)
 - **PWA**: installierbar, offline-fähig
+- **Monitor-Detailseite** (`/monitor/:id`) — Status-Header, Uptime-Statistiken (24h / 7d / 30d / 90d), 90-Tage-Uptime-Balken, Latenzverlauf (24h/7d/30d), letzte 50 Prüfprotokolle (Fehler hervorgehoben), zugehörige Vorfälle, 30s Auto-Refresh
+- **Private Statusseite** — öffentlich oder passwortgeschützt (SHA-256) mit 7-Tage-Entsperr-Token; alle öffentlichen Endpunkte geschützt (`401 status_page_locked`), Passwortänderung meldet alle ab, „Zugriff beenden“-Button im Footer. Standard: öffentlich, null Konfiguration
 
 ### Internationalisierung
 - **8 Sprachen**: English · 中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -39,7 +43,7 @@
 - **Ein-Klick-Deployment** über den Deploy-to-Cloudflare-Button – kein CLI nötig
 - **Automatische Initialisierung**: D1-Schema wird beim ersten Request automatisch erstellt
 - **Ein-Klick-Anmeldung**: Admin API key · Email magic link · Google · GitHub · Cloudflare Access
-- **Offene API**: `GET /api/status`, `GET /feed.xml`, eingehende Webhooks
+- **Offene API**: `GET /api/status`, `GET /feed.xml`, `GET /monitors/public/:id` (`?range` / `?limit`), eingehende Webhooks; öffentliche Monitor-Daten enthalten `check_ssl` / `check_domain`
 - **Backup & Wiederherstellung** (JSON-Export, optionales tägliches R2-Backup)
 - API keys für Integrationen von Drittanbietern
 

@@ -22,6 +22,8 @@ MonitorFlare is a self-hosted uptime monitoring platform with a beautiful public
 - **SSL certificate & domain expiry** detection (crt.sh + rdap.org)
 - **Error-rate threshold** alerts and **consecutive-failure** escalation
 - Configurable check intervals, pause/resume, tags, drag-and-drop sorting
+- **Shields.io-style monitor badges** — SSL / HTTP / HTTPS / DNS / TCP types shown next to each monitor name, hover turns green (shared global CSS, reused on status cards & the detail page)
+- **One-click SSL deep check** — a flag icon beside each monitor URL opens a full SSL analysis at `csr.plus/check?domain=...` (visible when SSL expiry tracking is enabled)
 
 ### 🔔 Notifications (9 channels)
 - DingTalk · WeCom (WeChat Work) · Feishu (Lark) · Telegram · Slack · Discord · ntfy · generic Webhook
@@ -33,6 +35,8 @@ MonitorFlare is a self-hosted uptime monitoring platform with a beautiful public
 - **Subscribe by email** to incident updates + **RSS/Atom feed**
 - Custom branding: logo, title, description, dark/light themes
 - **PWA** — installable and offline-ready
+- **Monitor detail page** (`/monitor/:id`) — status header card, uptime stats (24h / 7d / 30d / 90d), 90-day uptime bar, latency trend chart (24h/7d/30d), latest 50 check logs with failures highlighted, related incidents, auto-refresh every 30s
+- **Private status page** — public or password-protected (SHA-256) with a 7-day unlock token; all public endpoints are guarded (`401 status_page_locked`), changing the password signs everyone out, and an "exit access" button in the footer. Defaults to public for zero-config compatibility
 
 ### 🌍 Internationalization
 - **9 languages**: English · 简体中文 · 繁體中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -42,7 +46,7 @@ MonitorFlare is a self-hosted uptime monitoring platform with a beautiful public
 - **One-click deploy** via the Deploy to Cloudflare button — no CLI needed
 - **Auto-initialization**: D1 schema created on first request
 - **Multiple sign-in methods**: admin API key · email magic link · Google · GitHub · Cloudflare Access
-- **Open API**: `GET /api/status`, `GET /feed.xml`, inbound webhooks
+- **Open API**: `GET /api/status`, `GET /feed.xml`, `GET /monitors/public/:id` (`?range` / `?limit`), inbound webhooks; public monitor payloads include `check_ssl` / `check_domain`
 - **Backup & restore** (JSON export, optional R2 daily backups)
 - API keys for third-party integrations
 

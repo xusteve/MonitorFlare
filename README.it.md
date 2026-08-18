@@ -19,6 +19,8 @@
 - **Rilevamento scadenza** di certificati SSL e domini (crt.sh + rdap.org)
 - Avvisi su **soglia di tasso di errore**, **escalation degli avvisi su fallimenti consecutivi**
 - Intervalli di controllo configurabili, pausa/ripresa, tag, ordinamento tramite trascinamento
+- **Badge di tipo in stile Shields.io** — tipo SSL / HTTP / HTTPS / DNS / TCP accanto al nome, verde al passaggio del mouse (CSS globale condiviso, card e pagina di dettaglio)
+- **Analisi SSL approfondita con un clic** — icona bandiera accanto all’URL apre l’analisi su `csr.plus/check?domain=...` (visibile quando il monitoraggio scadenza SSL è attivo)
 
 ### Notifiche (9 canali)
 - DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / Webhook generico
@@ -30,6 +32,8 @@
 - **Iscrizione via e-mail** agli aggiornamenti degli incidenti, **feed RSS/Atom**
 - Branding personalizzato: logo, titolo, descrizione, temi (scuro/chiaro)
 - **PWA**: installabile, utilizzabile offline
+- **Pagina di dettaglio del monitor** (`/monitor/:id`) — intestazione di stato, statistiche uptime (24h / 7g / 30g / 90g), barra uptime 90 giorni, grafico latenza (24h/7g/30g), ultimi 50 log (errori in rosso), incidenti correlati, aggiornamento automatico 30 s
+- **Pagina di stato privata** — accesso pubblico o protetto da password (SHA-256) + token di sblocco 7 giorni ; tutti gli endpoint pubblici protetti (`401 status_page_locked`), cambiare password disconnette tutti, pulsante « esci dall’accesso » nel footer. Pubblico di default, configurazione zero
 
 ### Internazionalizzazione
 - **8 lingue**: English · 中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -39,7 +43,7 @@
 - **Deploy in un clic** tramite il pulsante Deploy to Cloudflare — nessuna CLI necessaria
 - **Inizializzazione automatica**: lo schema D1 viene creato automaticamente alla prima richiesta
 - **Accesso in un clic**: Admin API key · Email magic link · Google · GitHub · Cloudflare Access
-- **API aperta**: `GET /api/status`, `GET /feed.xml`, webhook in entrata
+- **API aperta**: `GET /api/status`, `GET /feed.xml`, `GET /monitors/public/:id` (`?range` / `?limit`), webhook in entrata ; i dati pubblici includono `check_ssl` / `check_domain`
 - **Backup e ripristino** (esportazione JSON, backup giornaliero R2 opzionale)
 - API keys per integrazioni di terze parti
 

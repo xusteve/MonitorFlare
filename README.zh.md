@@ -19,6 +19,8 @@
 - **SSL 证书与域名到期**检测(crt.sh + rdap.org)
 - **错误率阈值**告警、**连续失败**告警升级
 - 可配置检查间隔、暂停/恢复、标签、拖拽排序
+- **Shields.io 风格类型徽章** — 监控名右侧显示 SSL / HTTP / HTTPS / DNS / TCP 类型徽章，hover 变绿（全局 CSS 复用，状态页卡片与详情页共用）
+- **一键 SSL 深度检查** — 监控 URL 右侧 flag 图标，一键跳转 `csr.plus/check?domain=...` 深度分析（启用 SSL 到期跟踪时显示）
 
 ### 通知(9 种渠道)
 - DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / 通用 Webhook
@@ -30,6 +32,8 @@
 - **邮件订阅**事件更新、**RSS/Atom 订阅源**
 - 自定义品牌:Logo、标题、描述、主题(深色/浅色)
 - **PWA**:可安装、离线可用
+- **监控详情页**(`/monitor/:id`) — 状态头部卡、uptime 四格(24h/7d/30d/90d)、90 天可用率条带、延迟趋势图(24h/7d/30d)、最近 50 条检查日志(失败高亮)、相关事件、30s 自动刷新
+- **私密状态页** — 公开或密码保护(SHA-256)+ 7 天解锁 token；全部公开接口受保护(`401 status_page_locked`)、改密码全员登出、footer 退出访问按钮。默认公开，零配置兼容
 
 ### 国际化
 - **9 种语言**:English · 简体中文 · 繁體中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -39,7 +43,7 @@
 - **一键部署**:通过 Deploy to Cloudflare 按钮,无需 CLI
 - **自动初始化**:首次请求自动创建 D1 schema
 - **一键登录**:Admin API key · Email magic link · Google · GitHub · Cloudflare Access
-- **开放 API**:`GET /api/status`、`GET /feed.xml`、入站 webhooks
+- **开放 API**:`GET /api/status`、`GET /feed.xml`、`GET /monitors/public/:id`(`?range`/`?limit`)、入站 webhooks；公开监控数据含 `check_ssl`/`check_domain` 字段
 - **备份与恢复**(JSON 导出,可选 R2 每日备份)
 - 面向第三方集成的 API keys
 

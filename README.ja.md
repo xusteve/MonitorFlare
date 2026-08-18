@@ -19,6 +19,8 @@
 - **SSL 証明書・ドメイン期限**の検出(crt.sh + rdap.org)
 - **エラー率しきい値**アラート、**連続失敗**によるアラートエスカレーション
 - チェック間隔の設定、一時停止/再開、タグ、ドラッグ並べ替え
+- **Shields.io スタイルのモニター種別バッジ** — 各モニター名の横に SSL / HTTP / HTTPS / DNS / TCP 種別を表示、ホバーで緑色に（グローバル CSS を共有、ステータスカードと詳細ページで共通）
+- **ワンクリック SSL 詳細チェック** — モニター URL 横の旗アイコンから `csr.plus/check?domain=...` の SSL 詳細分析へ（SSL 有効期限追跡を有効化すると表示）
 
 ### 通知(9 チャンネル)
 - DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / 汎用 Webhook
@@ -30,6 +32,8 @@
 - インシデント更新の**メール購読**、**RSS/Atom フィード**
 - カスタムブランディング:ロゴ、タイトル、説明、テーマ(ダーク/ライト)
 - **PWA**:インストール可能、オフライン対応
+- **モニター詳細ページ**(`/monitor/:id`) — ステータスヘッダー、稼働率 4 枠(24h/7d/30d/90d)、90 日稼働率バー、遅延トレンド(24h/7d/30d)、直近 50 件のチェックログ(失敗を赤色強調)、関連イベント、30 秒自動更新
+- **非公開ステータスページ** — 公開またはパスワード保護(SHA-256)+ 7 日間のロック解除トークン；すべての公開エンドポイントを保護(`401 status_page_locked`)、パスワード変更で全員ログアウト、フッターに「アクセス終了」ボタン。既定は公開、ゼロ設定で互換
 
 ### 国際化
 - **8 言語**:English · 中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -39,7 +43,7 @@
 - **ワンクリックデプロイ**:Deploy to Cloudflare ボタンで CLI 不要
 - **自動初期化**:最初のリクエストで D1 スキーマを自動作成
 - **ワンクリックサインイン**:Admin API key · Email magic link · Google · GitHub · Cloudflare Access
-- **オープン API**:`GET /api/status`、`GET /feed.xml`、受信 Webhook
+- **オープン API**:`GET /api/status`、`GET /feed.xml`、`GET /monitors/public/:id`(`?range`/`?limit`)、受信 Webhook；公開モニターデータに `check_ssl`/`check_domain` を含む
 - **バックアップと復元**(JSON エクスポート、オプションの R2 毎日バックアップ)
 - サードパーティ連携用の API keys
 

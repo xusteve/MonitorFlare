@@ -19,6 +19,8 @@
 - **Détection de l'expiration** des certificats SSL et des domaines (crt.sh + rdap.org)
 - Alertes sur **seuil de taux d'erreur**, **escalade des alertes en cas d'échecs consécutifs**
 - Intervalles de vérification configurables, pause/reprise, étiquettes, tri par glisser-déposer
+- **Badges de type de moniteur style Shields.io** — type SSL / HTTP / HTTPS / DNS / TCP affiché à côté du nom, vert au survol (CSS global partagé, cartes & page de détail)
+- **Analyse SSL approfondie en un clic** — icône drapeau à côté de l’URL ouvre l’analyse sur `csr.plus/check?domain=...` (visible quand le suivi d’expiration SSL est activé)
 
 ### Notifications (9 canaux)
 - DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / Webhook générique
@@ -30,6 +32,8 @@
 - **Abonnement par e-mail** aux mises à jour d'incidents, **flux RSS/Atom**
 - Personnalisation : logo, titre, description, thèmes (sombre/clair)
 - **PWA** : installable, fonctionne hors ligne
+- **Page de détail du moniteur** (`/monitor/:id`) — en-tête d’état, statistiques de disponibilité (24h / 7j / 30j / 90j), barre de disponibilité 90 jours, graphique de latence (24h/7j/30j), 50 derniers journaux (échecs en rouge), incidents liés, actualisation auto 30 s
+- **Page de statut privée** — accès public ou protégé par mot de passe (SHA-256) + jeton de déverrouillage 7 jours ; tous les points de terminaison publics protégés (`401 status_page_locked`), changer le mot de passe déconnecte tout le monde, bouton « quitter l’accès » dans le pied de page. Public par défaut, zéro configuration
 
 ### Internationalisation
 - **8 langues** : English · 中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -39,7 +43,7 @@
 - **Déploiement en un clic** via le bouton Deploy to Cloudflare — pas de CLI nécessaire
 - **Initialisation automatique** : le schéma D1 est créé automatiquement à la première requête
 - **Connexion en un clic** : Admin API key · Email magic link · Google · GitHub · Cloudflare Access
-- **API ouverte** : `GET /api/status`, `GET /feed.xml`, webhooks entrants
+- **API ouverte** : `GET /api/status`, `GET /feed.xml`, `GET /monitors/public/:id` (`?range` / `?limit`), webhooks entrants ; les données publiques incluent `check_ssl` / `check_domain`
 - **Sauvegarde et restauration** (export JSON, sauvegarde quotidienne R2 optionnelle)
 - API keys pour les intégrations tierces
 

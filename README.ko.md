@@ -19,6 +19,8 @@
 - **SSL 인증서 및 도메인 만료** 감지(crt.sh + rdap.org)
 - **오류율 임계값** 알림, **연속 실패** 알림 에스컬레이션
 - 체크 간격 설정, 일시 중지/재개, 태그, 드래그 정렬
+- **Shields.io 스타일 모니터 유형 배지** — 모니터 이름 옆에 SSL / HTTP / HTTPS / DNS / TCP 유형 표시, 호버 시 초록색(전역 CSS 공유, 상태 카드와 상세 페이지 공용)
+- **원클릭 SSL 심층 검사** — 모니터 URL 옆 깃발 아이콘으로 `csr.plus/check?domain=...` SSL 분석으로 이동(SSL 만료 추적 활성화 시 표시)
 
 ### 알림(9개 채널)
 - DingTalk / WeCom / Feishu / Telegram / Slack / Discord / ntfy / 일반 Webhook
@@ -30,6 +32,8 @@
 - 인시던트 업데이트 **이메일 구독**, **RSS/Atom 피드**
 - 커스텀 브랜딩:로고, 제목, 설명, 테마(다크/라이트)
 - **PWA**:설치 가능, 오프라인 지원
+- **모니터 상세 페이지**(`/monitor/:id`) — 상태 헤더, 가동률 4칸(24h/7d/30d/90d), 90일 가동률 바, 지연 추세(24h/7d/30d), 최근 50개 점검 로그(실패 강조), 관련 이벤트, 30초 자동 새로고침
+- **비공개 상태 페이지** — 공개 또는 비밀번호 보호(SHA-256)+ 7일 잠금 해제 토큰; 모든 공개 엔드포인트 보호(`401 status_page_locked`), 비밀번호 변경 시 전체 로그아웃, 푸터에 "접근 종료" 버튼. 기본 공개, 제로 설정 호환
 
 ### 국제화
 - **8개 언어**:English · 中文 · 日本語 · 한국어 · Deutsch · Français · Italiano · Español
@@ -39,7 +43,7 @@
 - **원클릭 배포**:Deploy to Cloudflare 버튼, CLI 불필요
 - **자동 초기화**:첫 요청 시 D1 스키마 자동 생성
 - **원클릭 로그인**:Admin API key · Email magic link · Google · GitHub · Cloudflare Access
-- **공개 API**:`GET /api/status`, `GET /feed.xml`, 인바운드 webhooks
+- **공개 API**:`GET /api/status`, `GET /feed.xml`, `GET /monitors/public/:id`(`?range`/`?limit`), 인바운드 webhooks; 공개 모니터 데이터에 `check_ssl`/`check_domain` 포함
 - **백업 및 복원**(JSON 내보내기, 선택적 R2 일일 백업)
 - 서드파티 통합용 API keys
 
