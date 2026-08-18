@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "即時監控服務執行狀態",
     "downTemplatePlaceholder": "錯誤原因: {reason}",
     "upTemplatePlaceholder": "響應耗時: {latency}ms",
-    "errorRateTemplatePlaceholder": "錯誤率告警:過去 5 分鐘內錯誤率 {error_rate}%,超過閾值 {threshold}%"
+    "errorRateTemplatePlaceholder": "錯誤率告警:過去 5 分鐘內錯誤率 {error_rate}%,超過閾值 {threshold}%",
+    "accessControl": "狀態頁存取控制",
+    "accessControlHint": "控制誰可以存取你的公開狀態頁",
+    "visibilityPublic": "公開",
+    "visibilityPublicHint": "任何人透過連結即可存取",
+    "visibilityPrivate": "私密",
+    "visibilityPrivateHint": "需要輸入密碼才能存取",
+    "statusPassword": "存取密碼",
+    "statusPasswordOptional": "(留空則保持原密碼)",
+    "statusPasswordPlaceholder": "輸入密碼",
+    "statusPasswordHint": "以 SHA-256 雜湊儲存。修改密碼後所有訪客需重新登入。",
+    "statusPasswordRequired": "私密模式必須設定密碼"
   },
   "stats": {
     "title": "概覽",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7d",
     "range30d": "30d"
+  },
+  "statusLock": {
+    "hint": "該狀態頁為私密頁面,請輸入密碼繼續存取。",
+    "passwordPlaceholder": "密碼",
+    "login": "解鎖",
+    "loggingIn": "驗證中…",
+    "wrongPassword": "密碼錯誤",
+    "notConfigured": "狀態頁密碼尚未設定",
+    "requestFailed": "請求失敗,請重試",
+    "logout": "退出存取"
   }
 }

@@ -3,8 +3,11 @@
     <StatusHeader :loading="loading" :isDark="isDark" :siteSettings="siteSettings" @toggle-theme="toggleTheme" />
 
     <main class="flex-1 max-w-5xl w-full mx-auto px-6 py-10">
+      <!-- 锁屏(私密模式) -->
+      <StatusLockScreen v-if="locked" :title="siteSettings.site_title || 'MonitorFlare'" @unlocked="onUnlocked" />
+
       <!-- 英雄状态区 -->
-      <HeroBanner v-if="monitors.length > 0" :monitors="monitors" :activeMonitors="activeMonitors"
+      <HeroBanner v-else-if="monitors.length > 0" :monitors="monitors" :activeMonitors="activeMonitors"
         :allUp="allUp" :hasRetrying="hasRetrying" :hasDown="hasDown" :avgLatency="avgLatency" :error="error"
         @retry="fetchMonitors" />
 
@@ -104,7 +107,7 @@
       </div>
     </main>
 
-    <StatusFooter :loading="loading" :refreshing="refreshing" @refresh="manualRefresh" />
+    <StatusFooter :loading="loading" :refreshing="refreshing" :canLogout="!locked && !!statusToken" @refresh="manualRefresh" @logout="onLogout" />
   </div>
 </template>
 
@@ -112,7 +115,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useTheme } from '../composables/useTheme';
-import { API_BASE, fetchT, withRetry } from '../utils/api';
+import { API_BASE, fetchT, withRetry, isStatusLocked, statusLogout, STATUS_TOKEN_KEY } from '../utils/api';
 import { formatDate } from '../utils/format';
 import { getAppTimezone } from '../main';
 
@@ -120,6 +123,7 @@ import StatusHeader from '../components/status/StatusHeader.vue';
 import HeroBanner from '../components/status/HeroBanner.vue';
 import MonitorCard from '../components/status/MonitorCard.vue';
 import StatusFooter from '../components/status/StatusFooter.vue';
+import StatusLockScreen from '../components/status/StatusLockScreen.vue';
 
 const { t } = useI18n();
 const { isDark, toggleTheme } = useTheme('theme');
@@ -135,6 +139,8 @@ const subEmail = ref('');
 const subMsg = ref('');
 const subOk = ref(false);
 const subscribing = ref(false);
+const locked = ref(false);
+const statusToken = ref(localStorage.getItem(STATUS_TOKEN_KEY) || '');
 
 const activeMonitors = computed(() => monitors.value.filter(m => m.paused !== 1 && m.status !== 'PAUSED'));
 const allUp = computed(() => activeMonitors.value.length > 0 && activeMonitors.value.every(m => m.status === 'UP'));
@@ -160,6 +166,11 @@ const fetchMonitors = async () => {
     error.value = null;
     try {
         const res = await withRetry(() => fetchT(`${API_BASE}/monitors/public/details`));
+        if (await isStatusLocked(res)) {
+            locked.value = true;
+            monitors.value = [];
+            return;
+        }
         if (res.ok) {
             const data = await res.json();
             monitors.value = data.monitors || [];
@@ -185,6 +196,7 @@ const manualRefresh = async () => {
 const fetchIncidents = async () => {
     try {
         const r = await withRetry(() => fetchT(`${API_BASE}/incidents`));
+        if (await isStatusLocked(r)) { locked.value = true; return; }
         if (r.ok) incidents.value = await r.json();
     } catch {}
 };
@@ -192,6 +204,7 @@ const fetchIncidents = async () => {
 const fetchSettings = async () => {
     try {
         const r = await fetchT(`${API_BASE}/settings`);
+        if (await isStatusLocked(r)) { locked.value = true; return; }
         if (r.ok) {
             const d = await r.json();
             siteSettings.value = d;
@@ -200,6 +213,23 @@ const fetchSettings = async () => {
             if (meta && d.site_description) meta.content = d.site_description;
         }
     } catch {}
+};
+
+const onUnlocked = () => {
+    locked.value = false;
+    statusToken.value = localStorage.getItem(STATUS_TOKEN_KEY) || '';
+    fetchMonitors();
+    fetchIncidents();
+    fetchSettings();
+};
+
+const onLogout = () => {
+    statusLogout();
+    statusToken.value = '';
+    monitors.value = [];
+    incidents.value = [];
+    locked.value = true;
+    window.scrollTo({ top: 0 });
 };
 
 const subscribe = async () => {
@@ -216,6 +246,7 @@ const subscribe = async () => {
             body: JSON.stringify({ email: subEmail.value }),
         });
         subOk.value = r.ok;
+        if (await isStatusLocked(r)) { locked.value = true; return; }
         subMsg.value = r.ok ? t('statusPage.subscribed') : t('common.actionFailed');
         if (r.ok) subEmail.value = '';
     } catch {
@@ -231,7 +262,7 @@ onMounted(() => {
     fetchMonitors();
     fetchIncidents();
     fetchSettings();
-    _timer = setInterval(fetchMonitors, 30000);
+    _timer = setInterval(() => { if (!locked.value) fetchMonitors(); }, 30000);
 });
 onUnmounted(() => clearInterval(_timer));
 </script>

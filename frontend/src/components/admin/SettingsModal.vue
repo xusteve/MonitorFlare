@@ -47,6 +47,41 @@
 
               <section class="space-y-4">
                 <div class="pt-2 border-t border-white/5">
+                  <h4 class="text-sm font-semibold text-white mt-4">{{ $t('settings.accessControl') }}</h4>
+                  <p class="text-xs text-slate-500 mt-1">{{ $t('settings.accessControlHint') }}</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" @click="settings.status_page_visibility = 'public'"
+                    class="rounded-xl border px-4 py-3 text-left transition cursor-pointer"
+                    :class="settings.status_page_visibility !== 'private' ? 'border-emerald-500/60 bg-emerald-500/10' : 'border-slate-700 hover:border-slate-600'">
+                    <span class="flex items-center gap-2 text-sm font-semibold text-white">
+                      <i class="fas fa-globe text-emerald-400"></i>
+                      {{ $t('settings.visibilityPublic') }}
+                    </span>
+                    <span class="block text-xs text-slate-500 mt-1">{{ $t('settings.visibilityPublicHint') }}</span>
+                  </button>
+                  <button type="button" @click="settings.status_page_visibility = 'private'"
+                    class="rounded-xl border px-4 py-3 text-left transition cursor-pointer"
+                    :class="settings.status_page_visibility === 'private' ? 'border-emerald-500/60 bg-emerald-500/10' : 'border-slate-700 hover:border-slate-600'">
+                    <span class="flex items-center gap-2 text-sm font-semibold text-white">
+                      <i class="fas fa-lock text-emerald-400"></i>
+                      {{ $t('settings.visibilityPrivate') }}
+                    </span>
+                    <span class="block text-xs text-slate-500 mt-1">{{ $t('settings.visibilityPrivateHint') }}</span>
+                  </button>
+                </div>
+
+                <label class="grid gap-2">
+                  <span class="text-sm font-medium text-slate-300">{{ $t('settings.statusPassword') }} <span class="text-xs font-normal text-slate-500">{{ $t('settings.statusPasswordOptional') }}</span></span>
+                  <input v-model.trim="statusPassword" type="password" autocomplete="new-password" :placeholder="$t('settings.statusPasswordPlaceholder')"
+                    class="w-full border border-slate-700 rounded-xl px-3 py-2.5 text-sm bg-slate-800/80 text-white focus:border-emerald-500 outline-none">
+                  <span class="text-xs text-slate-500">{{ $t('settings.statusPasswordHint') }}</span>
+                </label>
+              </section>
+
+              <section class="space-y-4">
+                <div class="pt-2 border-t border-white/5">
                   <h4 class="text-sm font-semibold text-white mt-4">{{ $t('settings.general') }}</h4>
                   <p class="text-xs text-slate-500 mt-1">{{ $t('settings.language') }} / {{ $t('settings.timezone') }}</p>
                 </div>
@@ -165,6 +200,11 @@ const { t } = useI18n();
 const emit = defineEmits(['close', 'import-done']);
 const { storedToken } = useAuth();
 const { addToast } = useToast();
+
+const sha256Hex = async (value) => {
+    const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+    return [...new Uint8Array(bytes)].map(b => b.toString(16).padStart(2, '0')).join('');
+};
 const saving = ref(false);
 const importing = ref(false);
 const variables = ['{name}', '{url}', '{reason}', '{latency}', '{status}', '{error_rate}', '{threshold}', '{time}'];
@@ -194,7 +234,9 @@ const settings = ref({
     alert_template_error_rate: '',
     language: 'en',
     timezone: 'UTC',
+    status_page_visibility: 'public',
 });
+const statusPassword = ref('');
 
 const authFetch = async (url, opts = {}) => fetchT(url, { ...opts, headers: { ...opts.headers, 'Authorization': `Bearer ${storedToken.value}` } });
 
@@ -212,7 +254,9 @@ const fetchSettings = async () => {
                 alert_template_error_rate: d.alert_template_error_rate || '',
                 language: d.language || 'en',
                 timezone: d.timezone || 'UTC',
+                status_page_visibility: d.status_page_visibility === 'private' ? 'private' : 'public',
             };
+            statusPassword.value = '';
         }
     } catch {
         addToast(t('settings.loadFailed'), 'error');
@@ -221,12 +265,18 @@ const fetchSettings = async () => {
 
 const save = async () => {
     if (saving.value) return;
+    if (settings.value.status_page_visibility === 'private' && !statusPassword.value) {
+        addToast(t('settings.statusPasswordRequired'), 'error');
+        return;
+    }
     saving.value = true;
     try {
+        const payload = { ...settings.value };
+        if (statusPassword.value) payload.status_page_password = await sha256Hex(statusPassword.value);
         const r = await authFetch(`${API_BASE}/settings`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(settings.value),
+            body: JSON.stringify(payload),
         });
         if (r.ok) {
             addToast(t('settings.saved'), 'success');

@@ -15,8 +15,11 @@
         </button>
       </div>
 
+      <!-- 锁屏(私密模式) -->
+      <StatusLockScreen v-if="locked" :title="siteSettings.site_title || 'MonitorFlare'" @unlocked="onUnlocked" />
+
       <!-- 加载占位 -->
-      <div v-if="loading && !monitor" class="space-y-3 fade-up-d2">
+      <div v-else-if="loading && !monitor" class="space-y-3 fade-up-d2">
         <div class="glass rounded-2xl h-24 animate-pulse"></div>
         <div class="glass rounded-2xl h-16 animate-pulse"></div>
         <div class="glass rounded-2xl h-64 animate-pulse"></div>
@@ -216,7 +219,7 @@
       </template>
     </main>
 
-    <StatusFooter :loading="loading" :refreshing="refreshing" @refresh="manualRefresh" />
+    <StatusFooter :loading="loading" :refreshing="refreshing" :canLogout="!locked && !!statusToken" @refresh="manualRefresh" @logout="onLogout" />
   </div>
 </template>
 
@@ -230,10 +233,12 @@ import {
     formatDate, formatDateFull, getExpiryClass, formatExpiry, formatExpiryDate, latencyClass, statusBadgeClass,
 } from '../utils/format';
 import { getAppTimezone } from '../main';
+import { isStatusLocked, statusLogout, STATUS_TOKEN_KEY } from '../utils/api';
 
 import StatusHeader from '../components/status/StatusHeader.vue';
 import StatusFooter from '../components/status/StatusFooter.vue';
 import UptimeBar from '../components/status/UptimeBar.vue';
+import StatusLockScreen from '../components/status/StatusLockScreen.vue';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -246,8 +251,10 @@ const incidents = ref([]);
 const loading = ref(true);
 const refreshing = ref(false);
 const notFound = ref(false);
+const locked = ref(false);
 const range = ref('24h');
 const siteSettings = ref({ site_title: 'MonitorFlare', site_description: '', site_logo_url: '' });
+const statusToken = ref(localStorage.getItem(STATUS_TOKEN_KEY) || '');
 const seriesCache = {};
 
 const monitorId = computed(() => String(route.params.id));
@@ -398,6 +405,11 @@ const fetchDetail = async () => {
     notFound.value = false;
     try {
         const res = await withRetry(() => fetchT(`${API_BASE}/monitors/public/${monitorId.value}?range=${range.value}&limit=50`));
+        if (await isStatusLocked(res)) {
+            locked.value = true;
+            monitor.value = null;
+            return;
+        }
         if (res.status === 404) {
             notFound.value = true;
             monitor.value = null;
@@ -418,9 +430,27 @@ const fetchDetail = async () => {
     }
 };
 
+const onUnlocked = () => {
+    locked.value = false;
+    statusToken.value = localStorage.getItem(STATUS_TOKEN_KEY) || '';
+    fetchDetail();
+    fetchSettings();
+};
+
+const onLogout = () => {
+    statusLogout();
+    statusToken.value = '';
+    monitor.value = null;
+    logs.value = [];
+    incidents.value = [];
+    locked.value = true;
+    window.scrollTo({ top: 0 });
+};
+
 const fetchSettings = async () => {
     try {
         const r = await fetchT(`${API_BASE}/settings`);
+        if (await isStatusLocked(r)) { locked.value = true; return; }
         if (r.ok) {
             const d = await r.json();
             siteSettings.value = d;
@@ -439,7 +469,7 @@ let _timer;
 onMounted(() => {
     fetchDetail();
     fetchSettings();
-    _timer = setInterval(() => { fetchDetail(); }, 30000);
+    _timer = setInterval(() => { if (!locked.value) fetchDetail(); }, 30000);
 });
 onUnmounted(() => clearInterval(_timer));
 </script>

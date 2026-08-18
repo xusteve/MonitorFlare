@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "サービスの稼働状況をリアルタイムに監視",
     "downTemplatePlaceholder": "エラー原因: {reason}",
     "upTemplatePlaceholder": "応答時間: {latency}ms",
-    "errorRateTemplatePlaceholder": "エラー率アラート: 直近 5 分間のエラー率 {error_rate}%、しきい値 {threshold}%"
+    "errorRateTemplatePlaceholder": "エラー率アラート: 直近 5 分間のエラー率 {error_rate}%、しきい値 {threshold}%",
+    "accessControl": "ステータスページのアクセス制御",
+    "accessControlHint": "公開ステータスページを閲覧できる人を制御します",
+    "visibilityPublic": "公開",
+    "visibilityPublicHint": "リンクを知っている誰でも閲覧可能",
+    "visibilityPrivate": "非公開",
+    "visibilityPrivateHint": "閲覧にパスワードが必要",
+    "statusPassword": "アクセスパスワード",
+    "statusPasswordOptional": "(空欄の場合は現在のパスワードを維持)",
+    "statusPasswordPlaceholder": "パスワードを入力",
+    "statusPasswordHint": "SHA-256 ハッシュで保存。変更すると全訪問者が再ログインになります。",
+    "statusPasswordRequired": "非公開モードにはパスワードが必要です"
   },
   "stats": {
     "title": "概要",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7d",
     "range30d": "30d"
+  },
+  "statusLock": {
+    "hint": "このステータスページは非公開です。パスワードを入力してください。",
+    "passwordPlaceholder": "パスワード",
+    "login": "ロック解除",
+    "loggingIn": "確認中…",
+    "wrongPassword": "パスワードが正しくありません",
+    "notConfigured": "ステータスページのパスワードが未設定です",
+    "requestFailed": "リクエストに失敗しました",
+    "logout": "ログアウト"
   }
 }

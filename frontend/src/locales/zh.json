@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "实时监控服务运行状态",
     "downTemplatePlaceholder": "错误原因: {reason}",
     "upTemplatePlaceholder": "响应耗时: {latency}ms",
-    "errorRateTemplatePlaceholder": "错误率告警:过去 5 分钟内错误率 {error_rate}%,超过阈值 {threshold}%"
+    "errorRateTemplatePlaceholder": "错误率告警:过去 5 分钟内错误率 {error_rate}%,超过阈值 {threshold}%",
+    "accessControl": "状态页访问控制",
+    "accessControlHint": "控制谁可以访问你的公开状态页",
+    "visibilityPublic": "公开",
+    "visibilityPublicHint": "任何人通过链接即可访问",
+    "visibilityPrivate": "私密",
+    "visibilityPrivateHint": "需要输入密码才能访问",
+    "statusPassword": "访问密码",
+    "statusPasswordOptional": "(留空则保持原密码)",
+    "statusPasswordPlaceholder": "输入密码",
+    "statusPasswordHint": "以 SHA-256 哈希存储。修改密码后所有访客需重新登录。",
+    "statusPasswordRequired": "私密模式必须设置密码"
   },
   "stats": {
     "title": "概览",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7d",
     "range30d": "30d"
+  },
+  "statusLock": {
+    "hint": "该状态页为私密页面,请输入密码继续访问。",
+    "passwordPlaceholder": "密码",
+    "login": "解锁",
+    "loggingIn": "验证中…",
+    "wrongPassword": "密码错误",
+    "notConfigured": "状态页密码尚未设置",
+    "requestFailed": "请求失败,请重试",
+    "logout": "退出访问"
   }
 }

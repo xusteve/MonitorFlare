@@ -88,6 +88,8 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   timezone: 'UTC',
   theme: 'dark',
   status_page_feed: '1',
+  status_page_visibility: 'public',
+  status_page_password: '',
   alert_template_down: 'Error: {reason}',
   alert_template_up: 'Response time: {latency}ms',
   alert_template_error_rate: 'Error rate alert: {error_rate}% in last 5 minutes, threshold {threshold}%',

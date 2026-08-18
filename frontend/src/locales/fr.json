@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "Surveiller l'état du service en temps réel",
     "downTemplatePlaceholder": "Cause de l'erreur : {reason}",
     "upTemplatePlaceholder": "Temps de réponse : {latency}ms",
-    "errorRateTemplatePlaceholder": "Alerte de taux d'erreur : {error_rate}% au cours des 5 dernières minutes, seuil {threshold}%"
+    "errorRateTemplatePlaceholder": "Alerte de taux d'erreur : {error_rate}% au cours des 5 dernières minutes, seuil {threshold}%",
+    "accessControl": "Accès à la page de statut",
+    "accessControlHint": "Contrôlez qui peut voir votre page de statut publique",
+    "visibilityPublic": "Public",
+    "visibilityPublicHint": "Toute personne avec le lien peut voir",
+    "visibilityPrivate": "Privé",
+    "visibilityPrivateHint": "Mot de passe requis",
+    "statusPassword": "Mot de passe d'accès",
+    "statusPasswordOptional": "(laisser vide pour conserver actuel)",
+    "statusPasswordPlaceholder": "Entrer un mot de passe",
+    "statusPasswordHint": "Stocké en hash SHA-256. Le changer déconnecte tous les visiteurs.",
+    "statusPasswordRequired": "Mot de passe requis en mode privé"
   },
   "stats": {
     "title": "Vue d'ensemble",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7j",
     "range30d": "30j"
+  },
+  "statusLock": {
+    "hint": "Cette page de statut est privée. Entrez le mot de passe.",
+    "passwordPlaceholder": "Mot de passe",
+    "login": "Déverrouiller",
+    "loggingIn": "Vérification…",
+    "wrongPassword": "Mot de passe incorrect",
+    "notConfigured": "Le mot de passe de la page de statut n'est pas configuré",
+    "requestFailed": "Échec de la requête",
+    "logout": "Déconnexion"
   }
 }

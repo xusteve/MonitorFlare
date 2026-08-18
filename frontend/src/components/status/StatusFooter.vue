@@ -36,6 +36,10 @@
           <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0H3"/></svg>
           {{ $t('footer.admin') }}
         </router-link>
+        <button v-if="canLogout" @click="$emit('logout')" class="flex items-center gap-1.5 text-slate-500 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition-colors cursor-pointer" :title="$t('statusLock.logout')">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>
+          {{ $t('statusLock.logout') }}
+        </button>
       </div>
     </div>
   </footer>
@@ -45,8 +49,9 @@
 defineProps({
     loading: Boolean,
     refreshing: Boolean,
+    canLogout: Boolean,
 });
-defineEmits(['refresh']);
+defineEmits(['refresh', 'logout']);
 
 // 从 Vite 环境变量读取，回退默认值
 const footerAuthor = import.meta.env.VITE_FOOTER_AUTHOR || 'MonitorFlare';

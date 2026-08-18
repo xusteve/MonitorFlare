@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "Monitora lo stato del servizio in tempo reale",
     "downTemplatePlaceholder": "Causa errore: {reason}",
     "upTemplatePlaceholder": "Tempo di risposta: {latency}ms",
-    "errorRateTemplatePlaceholder": "Avviso di tasso d'errore: {error_rate}% negli ultimi 5 minuti, soglia {threshold}%"
+    "errorRateTemplatePlaceholder": "Avviso di tasso d'errore: {error_rate}% negli ultimi 5 minuti, soglia {threshold}%",
+    "accessControl": "Accesso alla pagina di stato",
+    "accessControlHint": "Controlla chi può vedere la tua pagina di stato pubblica",
+    "visibilityPublic": "Pubblico",
+    "visibilityPublicHint": "Chiunque abbia il link può vedere",
+    "visibilityPrivate": "Privato",
+    "visibilityPrivateHint": "Richiede password",
+    "statusPassword": "Password di accesso",
+    "statusPasswordOptional": "(lasciare vuoto per mantenere attuale)",
+    "statusPasswordPlaceholder": "Inserisci una password",
+    "statusPasswordHint": "Salvata come hash SHA-256. Cambiarla disconnette tutti i visitatori.",
+    "statusPasswordRequired": "Password richiesta in modalità privata"
   },
   "stats": {
     "title": "Panoramica",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7g",
     "range30d": "30g"
+  },
+  "statusLock": {
+    "hint": "Questa pagina di stato è privata. Inserisci la password.",
+    "passwordPlaceholder": "Password",
+    "login": "Sblocca",
+    "loggingIn": "Verifica…",
+    "wrongPassword": "Password errata",
+    "notConfigured": "La password della pagina di stato non è configurata",
+    "requestFailed": "Richiesta fallita",
+    "logout": "Esci"
   }
 }

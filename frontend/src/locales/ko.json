@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "서비스 상태를 실시간으로 모니터링",
     "downTemplatePlaceholder": "오류 원인: {reason}",
     "upTemplatePlaceholder": "응답 시간: {latency}ms",
-    "errorRateTemplatePlaceholder": "오류율 알림: 최근 5분간 오류율 {error_rate}%, 임계값 {threshold}%"
+    "errorRateTemplatePlaceholder": "오류율 알림: 최근 5분간 오류율 {error_rate}%, 임계값 {threshold}%",
+    "accessControl": "상태 페이지 접근 제어",
+    "accessControlHint": "공개 상태 페이지를 볼 수 있는 사람을 제어합니다",
+    "visibilityPublic": "공개",
+    "visibilityPublicHint": "링크가 있는 모든 사람이 볼 수 있음",
+    "visibilityPrivate": "비공개",
+    "visibilityPrivateHint": "비밀번호 입력 필요",
+    "statusPassword": "접근 비밀번호",
+    "statusPasswordOptional": "(비워두면 현재 비밀번호 유지)",
+    "statusPasswordPlaceholder": "비밀번호 입력",
+    "statusPasswordHint": "SHA-256 해시로 저장됩니다. 변경 시 모든 방문자가 다시 로그인해야 합니다.",
+    "statusPasswordRequired": "비공개 모드에는 비밀번호가 필요합니다"
   },
   "stats": {
     "title": "개요",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7d",
     "range30d": "30d"
+  },
+  "statusLock": {
+    "hint": "이 상태 페이지는 비공개입니다. 계속하려면 비밀번호를 입력하세요.",
+    "passwordPlaceholder": "비밀번호",
+    "login": "잠금 해제",
+    "loggingIn": "확인 중…",
+    "wrongPassword": "비밀번호가 올바르지 않습니다",
+    "notConfigured": "상태 페이지 비밀번호가 설정되지 않았습니다",
+    "requestFailed": "요청 실패, 다시 시도하세요",
+    "logout": "로그아웃"
   }
 }

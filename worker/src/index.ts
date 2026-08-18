@@ -13,10 +13,11 @@ import {
   createSessionToken, createOAuthState, verifyOAuthState, verifySessionToken,
   verifyAdminCredential, verifyMagicLinkToken, createMagicLinkToken,
   verifyCfAccessToken, verifyApiKey, hashApiKey,
+  createStatusToken, verifyStatusToken, hashStatusPassword,
 } from './auth';
 import {
   getAllowedOrigins, isLocalOrigin, getAuthSecret, isValidEmail,
-  maskChannelConfig, formatTimeInTz, randomToken, base64UrlEncode, hmacSha256,
+  maskChannelConfig, formatTimeInTz, randomToken, base64UrlEncode, hmacSha256, safeEqual,
 } from './utils';
 
 const MONITOR_COLUMNS = `
@@ -49,12 +50,35 @@ const PUBLIC_PATHS = [
 ];
 const PROTECTED_PREFIXES = ['/monitors', '/notification-channels', '/incidents', '/settings', '/test-alert', '/health', '/api-keys', '/backup'];
 
+// 私密模式下需锁定的公开接口(前缀匹配)
+const STATUS_LOCK_PATHS = [
+  '/monitors/public', '/incidents', '/settings', '/feed.xml', '/api/status', '/status', '/api/subscribe', '/api/unsubscribe',
+];
+// 私密模式下始终放行(登录/管理认证)
+const STATUS_LOCK_EXEMPT = ['/api/status/login', '/auth/', '/webhooks/'];
+
 app.use('/*', async (c, next) => {
   if (c.req.method === 'OPTIONS') return await next();
   const path = c.req.path;
 
   // 初始化自检(幂等,首次访问自动建表)
   await ensureInitialized(c.env);
+
+  // 私密模式:锁定状态页公开接口
+  const visibility = await getSetting(c.env, 'status_page_visibility');
+  if (visibility === 'private'
+    && !STATUS_LOCK_EXEMPT.some(p => path.startsWith(p))
+    && STATUS_LOCK_PATHS.some(p => path === p || path.startsWith(p + '/'))) {
+    const authHeader = c.req.header('Authorization');
+    const token = authHeader ? authHeader.replace(/^Bearer\s+/i, '') : '';
+    if (token) {
+      const pwHash = await getSetting(c.env, 'status_page_password');
+      if (pwHash && (await verifyStatusToken(c.env, token, pwHash) || await verifySessionToken(c.env, token))) {
+        return await next();
+      }
+    }
+    return c.json({ error: 'status_page_locked' }, 401);
+  }
 
   // 公开路由豁免
   if (PUBLIC_PATHS.some(p => path.startsWith(p))) return await next();
@@ -946,6 +970,22 @@ const statusHandler = async (c) => {
 // 双注册:直连 Worker(/api/status)与经 Pages 代理(/status)
 app.get('/api/status', statusHandler);
 app.get('/status', statusHandler);
+
+// 状态页登录(私密模式):密码换 token
+app.post('/api/status/login', async (c) => {
+  try {
+    const body = await c.req.json<{ password?: string }>().catch((): { password?: string } => ({}));
+    if (!body.password) return c.json({ error: 'Password is required' }, 400);
+    const storedHash = await getSetting(c.env, 'status_page_password');
+    if (!storedHash) return c.json({ error: 'status_page_not_configured' }, 503);
+    const inputHash = await hashStatusPassword(body.password);
+    if (!await safeEqual(inputHash, storedHash)) return c.json({ error: 'invalid_password' }, 401);
+    const token = await createStatusToken(c.env, storedHash);
+    return c.json(token);
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
 
 app.get('/feed.xml', async (c) => {
   try {

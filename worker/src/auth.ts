@@ -103,6 +103,44 @@ export async function verifyOAuthState(env: Bindings, state: string): Promise<bo
   }
 }
 
+// ---------- 状态页访问 token(私密模式) ----------
+// 签名密钥派生自 AUTH_SECRET + 密码哈希 → 改密码即所有已发 token 失效
+const STATUS_TOKEN_TTL_MS = 7 * 24 * 3_600_000;
+
+async function statusPageSecret(env: Bindings, passwordHash: string): Promise<string> {
+  const secret = getAuthSecret(env) || 'status-page';
+  return hmacSha256(secret, `status:${passwordHash}`);
+}
+
+export async function hashStatusPassword(password: string): Promise<string> {
+  const bytes = await sha256(password);
+  return [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+export async function createStatusToken(env: Bindings, passwordHash: string): Promise<{ token: string; expires_at: string }> {
+  const secret = await statusPageSecret(env, passwordHash);
+  const expiresAt = new Date(Date.now() + STATUS_TOKEN_TTL_MS);
+  const payload = base64UrlEncode(JSON.stringify({ exp: expiresAt.toISOString(), sub: 'status' }));
+  const signature = await hmacSha256(secret, payload);
+  return { token: `sp.${payload}.${signature}`, expires_at: expiresAt.toISOString() };
+}
+
+export async function verifyStatusToken(env: Bindings, token: string, passwordHash: string): Promise<boolean> {
+  if (!token.startsWith('sp.')) return false;
+  const parts = token.split('.');
+  if (parts.length !== 3) return false;
+  const [, payload, signature] = parts;
+  const secret = await statusPageSecret(env, passwordHash);
+  const expected = await hmacSha256(secret, payload);
+  if (!await safeEqual(signature, expected)) return false;
+  try {
+    const data = JSON.parse(base64UrlDecode(payload)) as { exp?: string; sub?: string };
+    return data.sub === 'status' && !!data.exp && new Date(data.exp).getTime() > Date.now();
+  } catch {
+    return false;
+  }
+}
+
 // ---------- Cloudflare Access JWT 校验(RS256 + JWKS) ----------
 export async function verifyCfAccessToken(env: Bindings, jwt: string): Promise<boolean> {
   if (!env.CF_ACCESS_AUD) return false;

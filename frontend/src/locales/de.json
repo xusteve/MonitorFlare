@@ -488,7 +488,18 @@
     "siteDescriptionPlaceholder": "Dienststatus in Echtzeit überwachen",
     "downTemplatePlaceholder": "Fehlerursache: {reason}",
     "upTemplatePlaceholder": "Antwortzeit: {latency}ms",
-    "errorRateTemplatePlaceholder": "Fehlerratenwarnung: {error_rate}% in den letzten 5 Minuten, Schwellenwert {threshold}%"
+    "errorRateTemplatePlaceholder": "Fehlerratenwarnung: {error_rate}% in den letzten 5 Minuten, Schwellenwert {threshold}%",
+    "accessControl": "Zugriff auf Statusseite",
+    "accessControlHint": "Steuern Sie, wer Ihre öffentliche Statusseite sehen kann",
+    "visibilityPublic": "Öffentlich",
+    "visibilityPublicHint": "Jeder mit dem Link kann sie sehen",
+    "visibilityPrivate": "Privat",
+    "visibilityPrivateHint": "Passwort erforderlich",
+    "statusPassword": "Zugangspasswort",
+    "statusPasswordOptional": "(leer lassen, um aktuelles zu behalten)",
+    "statusPasswordPlaceholder": "Passwort eingeben",
+    "statusPasswordHint": "Wird als SHA-256-Hash gespeichert. Änderung meldet alle Besucher ab.",
+    "statusPasswordRequired": "Passwort für privaten Modus erforderlich"
   },
   "stats": {
     "title": "Übersicht",
@@ -643,5 +654,15 @@
     "range24h": "24h",
     "range7d": "7d",
     "range30d": "30d"
+  },
+  "statusLock": {
+    "hint": "Diese Statusseite ist privat. Geben Sie das Passwort ein.",
+    "passwordPlaceholder": "Passwort",
+    "login": "Entsperren",
+    "loggingIn": "Prüfe…",
+    "wrongPassword": "Falsches Passwort",
+    "notConfigured": "Statusseiten-Passwort ist noch nicht konfiguriert",
+    "requestFailed": "Anfrage fehlgeschlagen",
+    "logout": "Abmelden"
   }
 }
