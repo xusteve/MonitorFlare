@@ -18,7 +18,7 @@ import {
 } from './auth';
 import {
   getAllowedOrigins, isLocalOrigin, getAuthSecret, isValidEmail,
-  maskChannelConfig, formatTimeInTz, randomToken, base64UrlEncode, hmacSha256, safeEqual,
+  maskChannelConfig, formatTimeInTz, randomToken, base64UrlEncode, hmacSha256, safeEqual, maskSecret,
 } from './utils';
 
 const MONITOR_COLUMNS = `
@@ -49,7 +49,7 @@ app.use('/*', cors({
 const PUBLIC_PATHS = [
   '/auth/', '/monitors/public', '/api/status', '/feed.xml', '/api/subscribe', '/api/unsubscribe', '/webhooks/',
 ];
-const PROTECTED_PREFIXES = ['/monitors', '/notification-channels', '/incidents', '/settings', '/test-alert', '/health', '/api-keys', '/backup'];
+const PROTECTED_PREFIXES = ['/monitors', '/notification-channels', '/incidents', '/settings', '/test-alert', '/health', '/api-keys', '/backup', '/api/v1'];
 
 // 私密模式下需锁定的公开接口(前缀匹配)
 const STATUS_LOCK_PATHS = [
@@ -866,6 +866,128 @@ app.delete('/api-keys/:id', async (c) => {
   try {
     await c.env.DB.prepare('DELETE FROM api_keys WHERE id = ?').bind(id).run();
     return c.json({ success: true });
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+
+// ============================================================
+// 完整数据 API(/api/v1,需 API key 或 admin token)
+// ============================================================
+
+// 脱敏:掩码监控请求头中的敏感字段
+function maskMonitorSensitive(monitor: Record<string, unknown>): Record<string, unknown> {
+  if (monitor.request_headers && typeof monitor.request_headers === 'string') {
+    try {
+      const headers = JSON.parse(monitor.request_headers) as Record<string, string>;
+      const masked: Record<string, string> = {};
+      for (const [k, v] of Object.entries(headers)) {
+        masked[k] = ['authorization', 'token', 'api-key', 'apikey', 'password', 'cookie', 'x-api-key'].some(s => k.toLowerCase().includes(s)) ? maskSecret(v) : v;
+      }
+      return { ...monitor, request_headers: JSON.stringify(masked) };
+    } catch { /* keep as is */ }
+  }
+  return monitor;
+}
+
+// 敏感设置 key(导出时排除)
+const SENSITIVE_SETTING_KEYS = ['status_page_password'];
+function isSensitiveSettingKey(key: string): boolean {
+  return SENSITIVE_SETTING_KEYS.includes(key) || /(password|secret|token|api[_-]?key)/i.test(key);
+}
+
+app.get('/api/v1/monitors', async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare(`SELECT ${MONITOR_COLUMNS} FROM monitors ORDER BY sort_order ASC, created_at ASC`).all();
+    return c.json((results || []).map(maskMonitorSensitive));
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+
+app.get('/api/v1/logs', async (c) => {
+  try {
+    const monitorId = Number(c.req.query('monitor_id') || 0);
+    const since = c.req.query('since') || '';
+    const until = c.req.query('until') || '';
+    const limit = Math.min(Math.max(Number(c.req.query('limit') || 100), 1), 5000);
+    const offset = Math.max(Number(c.req.query('offset') || 0), 0);
+
+    const where: string[] = [];
+    const bind: (string | number)[] = [];
+    if (monitorId > 0) { where.push('monitor_id = ?'); bind.push(monitorId); }
+    if (since) { where.push('created_at >= ?'); bind.push(since); }
+    if (until) { where.push('created_at <= ?'); bind.push(until); }
+    const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : '';
+
+    const { results } = await c.env.DB.prepare(
+      `SELECT id, monitor_id, status_code, latency, is_fail, reason, created_at FROM logs ${whereSql} ORDER BY created_at DESC LIMIT ? OFFSET ?`
+    ).bind(...bind, limit, offset).all();
+    const cnt = await c.env.DB.prepare(`SELECT COUNT(*) as c FROM logs ${whereSql}`).bind(...bind).first<{ c: number }>();
+    return c.json({ total: cnt?.c || 0, limit, offset, logs: results || [] });
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+
+app.get('/api/v1/incidents', async (c) => {
+  try {
+    const limit = Math.min(Math.max(Number(c.req.query('limit') || 500), 1), 1000);
+    const { results } = await c.env.DB.prepare('SELECT * FROM incidents ORDER BY created_at DESC LIMIT ?').bind(limit).all();
+    return c.json(results || []);
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+
+app.get('/api/v1/uptime', async (c) => {
+  try {
+    const days = Math.min(Math.max(Number(c.req.query('days') || 30), 1), 365);
+    const sinceDate = `date('now','-${days - 1} days')`;
+    const { results: daily } = await c.env.DB.prepare(
+      `SELECT monitor_id, date, total_checks, successful_checks, avg_latency FROM daily_uptime WHERE date >= ${sinceDate} ORDER BY monitor_id, date`
+    ).all();
+    const { results: monitors } = await c.env.DB.prepare('SELECT id, name, url, type FROM monitors ORDER BY sort_order ASC').all();
+
+    type Row = { monitor_id: number; total_checks: number; successful_checks: number };
+    const agg = new Map<number, { t: number; s: number }>();
+    for (const r of daily || []) {
+      const id = r.monitor_id as number;
+      const cur = agg.get(id) || { t: 0, s: 0 };
+      cur.t += (r as Row).total_checks || 0;
+      cur.s += (r as Row).successful_checks || 0;
+      agg.set(id, cur);
+    }
+    const pct = (t: number, s: number) => t > 0 ? Number(((s / t) * 100).toFixed(1)) : null;
+    const summary = (monitors || []).map(m => {
+      const a = agg.get(m.id as number);
+      return { id: m.id, name: m.name, url: m.url, type: m.type, uptime: a ? pct(a.t, a.s) : null, checks: a?.t || 0 };
+    });
+    return c.json({ days, daily: daily || [], summary });
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+
+app.get('/api/v1/export', async (c) => {
+  try {
+    const limit = Math.min(Math.max(Number(c.req.query('limit') || 1000), 1), 5000);
+    const { results: monitors } = await c.env.DB.prepare(`SELECT ${MONITOR_COLUMNS} FROM monitors ORDER BY sort_order ASC`).all();
+    const { results: logs } = await c.env.DB.prepare('SELECT id, monitor_id, status_code, latency, is_fail, reason, created_at FROM logs ORDER BY created_at DESC LIMIT ?').bind(limit).all();
+    const { results: incidents } = await c.env.DB.prepare('SELECT * FROM incidents ORDER BY created_at DESC LIMIT 1000').all();
+    const { results: uptime } = await c.env.DB.prepare("SELECT monitor_id, date, total_checks, successful_checks, avg_latency FROM daily_uptime WHERE date >= date('now','-90 days') ORDER BY monitor_id, date").all();
+    const { results: settings } = await c.env.DB.prepare('SELECT key, value FROM settings').all<{ key: string; value: string }>();
+    const { results: channels } = await c.env.DB.prepare('SELECT id, type, name, enabled, config, created_at FROM notification_channels').all();
+
+    const safeSettings = (settings || []).filter(s => !isSensitiveSettingKey(s.key));
+    const safeChannels = (channels || []).map(ch => maskChannelConfig(ch as unknown as { config: string }));
+
+    return c.json({
+      app: 'MonitorFlare', version: 1, exported_at: new Date().toISOString(),
+      monitors: (monitors || []).map(maskMonitorSensitive),
+      logs: logs || [], incidents: incidents || [], uptime: uptime || [],
+      settings: safeSettings, notification_channels: safeChannels,
+    });
   } catch (e: unknown) {
     return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
   }

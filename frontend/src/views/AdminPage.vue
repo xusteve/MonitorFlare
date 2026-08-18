@@ -31,6 +31,9 @@
           <button @click="exportMonitors" class="flex items-center gap-1.5 px-3 py-2 bg-slate-200 dark:bg-slate-700/50 hover:bg-slate-300 dark:hover:bg-slate-600/50 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-medium rounded-xl transition-all cursor-pointer border border-slate-300 dark:border-slate-600/50">
             <i class="fas fa-download text-xs"></i> {{ $t('adminPage.export') }}
           </button>
+          <button @click="showApiKeys = true" class="flex items-center gap-1.5 px-3 py-2 bg-slate-200 dark:bg-slate-700/50 hover:bg-slate-300 dark:hover:bg-slate-600/50 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-medium rounded-xl transition-all cursor-pointer border border-slate-300 dark:border-slate-600/50">
+            <i class="fas fa-key text-xs"></i> {{ $t('adminPage.apiKeys') }}
+          </button>
           <button @click="showChannels = true" class="flex items-center gap-1.5 px-3 py-2 bg-slate-200 dark:bg-slate-700/50 hover:bg-slate-300 dark:hover:bg-slate-600/50 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-medium rounded-xl transition-all cursor-pointer border border-slate-300 dark:border-slate-600/50">
             <i class="fas fa-bell text-xs"></i> {{ $t('adminPage.channels') }}
           </button>
@@ -140,6 +143,8 @@
 
     <SettingsModal v-if="showSettings" :monitors="monitors" @close="showSettings = false" @import-done="fetchMonitors" />
 
+    <ApiKeysModal v-if="showApiKeys" @close="showApiKeys = false" />
+
     <ConfirmDialog v-if="confirmModal.show" :message="confirmModal.message" @confirm="handleConfirm(true)" @cancel="handleConfirm(false)" />
 
     <ToastContainer />
@@ -166,6 +171,7 @@ import LogsModal from '../components/admin/LogsModal.vue';
 import ChannelsModal from '../components/admin/ChannelsModal.vue';
 import IncidentsModal from '../components/admin/IncidentsModal.vue';
 import SettingsModal from '../components/admin/SettingsModal.vue';
+import ApiKeysModal from '../components/admin/ApiKeysModal.vue';
 import ConfirmDialog from '../components/admin/ConfirmDialog.vue';
 import ToastContainer from '../components/admin/ToastContainer.vue';
 
@@ -197,6 +203,7 @@ const showLogs = ref(false);
 const showChannels = ref(false);
 const showIncidents = ref(false);
 const showSettings = ref(false);
+const showApiKeys = ref(false);
 
 // ── 添加监控 ──
 const newMonitor = ref({ name: '', url: '', type: 'http', record_type: 'A', expected: '', port: 443, method: 'GET', keyword: '', user_agent: '', tags: '', request_headers: '', request_body: '', interval: 300, check_ssl: true, check_domain: true, alert_silence_hours: '24', alert_error_rate: 0 });
