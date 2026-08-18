@@ -6,6 +6,7 @@
       <!-- 锁屏(私密模式) -->
       <StatusLockScreen v-if="locked" :title="siteSettings.site_title || 'MonitorFlare'" @unlocked="onUnlocked" />
 
+      <template v-else>
       <!-- 英雄状态区 -->
       <HeroBanner v-else-if="monitors.length > 0" :monitors="monitors" :activeMonitors="activeMonitors"
         :allUp="allUp" :hasRetrying="hasRetrying" :hasDown="hasDown" :avgLatency="avgLatency" :error="error"
@@ -105,6 +106,7 @@
           </a>
         </div>
       </div>
+      </template>
     </main>
 
     <StatusFooter :loading="loading" :refreshing="refreshing" :canLogout="!locked && !!statusToken" @refresh="manualRefresh" @logout="onLogout" />
