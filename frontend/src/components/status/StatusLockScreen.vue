@@ -21,7 +21,7 @@
           </button>
         </form>
 
-        <p v-if="error" class="mt-3 text-xs text-red-500 dark:text-red-400">{{ errorText }}</p>
+        <p v-if="errorText" class="mt-3 text-xs text-red-500 dark:text-red-400">{{ errorText }}</p>
       </div>
     </div>
   </div>
