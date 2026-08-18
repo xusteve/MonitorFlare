@@ -3,6 +3,7 @@
 // 基于 Uptime-Monitor(MIT)分发的增强版
 // ============================================================
 import { Hono } from 'hono';
+import type { Context } from 'hono';
 import { cors } from 'hono/cors';
 import type { Bindings, CheckResult, Incident, Monitor, NotificationChannel, Subscription } from './types';
 import { performCheck, updateDomainCertInfo } from './checks';
@@ -972,7 +973,7 @@ app.get('/api/status', statusHandler);
 app.get('/status', statusHandler);
 
 // 状态页登录(私密模式):密码换 token
-const statusLoginHandler = async (c) => {
+const statusLoginHandler = async (c: Context<{ Bindings: Bindings }>) => {
   try {
     const body = await c.req.json<{ password?: string }>().catch((): { password?: string } => ({}));
     if (!body.password) return c.json({ error: 'Password is required' }, 400);
