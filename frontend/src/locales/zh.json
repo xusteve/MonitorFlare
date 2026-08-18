@@ -96,7 +96,8 @@
       "port": "端口检查",
       "ssl": "SSL 检查"
     },
-    "sslCheck": "检查 SSL 证书"
+    "sslCheck": "检查 SSL 证书",
+    "viewDetails": "查看详情"
   },
   "uptimeBar": {
     "noData": "无数据",
@@ -606,5 +607,41 @@
     "syncing": "同步中",
     "statusPage": "状态页",
     "admin": "管理后台"
+  },
+  "monitorDetail": {
+    "back": "返回状态页",
+    "refresh": "刷新",
+    "notFound": "未找到该监控",
+    "lastCheck": "上次检查 {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "域名 {days} · {date}",
+    "sslChecked": "已检查 SSL",
+    "uptime90": "可用率(近 90 天)",
+    "latencyTrend": "延迟趋势",
+    "now": "现在",
+    "noData": "暂无数据",
+    "recentChecks": "最近检查",
+    "recentChecksCount": "{count} 条",
+    "colTime": "时间",
+    "colStatus": "状态",
+    "colCode": "状态码",
+    "colLatency": "延迟",
+    "colReason": "原因",
+    "statusUp": "正常",
+    "statusDown": "故障",
+    "relatedIncidents": "相关事件",
+    "resolvedAt": "已于 {time} 解决",
+    "incidentResolved": "已解决",
+    "incidentScheduled": "已计划",
+    "incidentCritical": "严重",
+    "incidentWarning": "警告",
+    "incidentInfo": "通知",
+    "stat24h": "近 24 小时",
+    "stat7d": "近 7 天",
+    "stat30d": "近 30 天",
+    "stat90d": "近 90 天",
+    "range24h": "24h",
+    "range7d": "7d",
+    "range30d": "30d"
   }
 }

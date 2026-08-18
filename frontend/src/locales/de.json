@@ -96,7 +96,8 @@
       "port": "Port-Check",
       "ssl": "SSL-Prüfung"
     },
-    "sslCheck": "SSL-Zertifikat prüfen"
+    "sslCheck": "SSL-Zertifikat prüfen",
+    "viewDetails": "Details ansehen"
   },
   "uptimeBar": {
     "noData": "Keine Daten",
@@ -606,5 +607,41 @@
     "syncing": "SYNC",
     "statusPage": "STATUS-SEITE",
     "admin": "Admin-Konsole"
+  },
+  "monitorDetail": {
+    "back": "Zurück zum Status",
+    "refresh": "Aktualisieren",
+    "notFound": "Monitor nicht gefunden",
+    "lastCheck": "Zuletzt geprüft {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "Domain {days} · {date}",
+    "sslChecked": "SSL geprüft",
+    "uptime90": "Verfügbarkeit (90 Tage)",
+    "latencyTrend": "Latenzverlauf",
+    "now": "jetzt",
+    "noData": "Noch keine Daten",
+    "recentChecks": "Letzte Prüfungen",
+    "recentChecksCount": "{count} Einträge",
+    "colTime": "Zeit",
+    "colStatus": "Status",
+    "colCode": "Code",
+    "colLatency": "Latenz",
+    "colReason": "Grund",
+    "statusUp": "Online",
+    "statusDown": "Offline",
+    "relatedIncidents": "Zugehörige Vorfälle",
+    "resolvedAt": "Behoben um {time}",
+    "incidentResolved": "Behoben",
+    "incidentScheduled": "Geplant",
+    "incidentCritical": "Kritisch",
+    "incidentWarning": "Warnung",
+    "incidentInfo": "Info",
+    "stat24h": "24 Stunden",
+    "stat7d": "7 Tage",
+    "stat30d": "30 Tage",
+    "stat90d": "90 Tage",
+    "range24h": "24h",
+    "range7d": "7d",
+    "range30d": "30d"
   }
 }

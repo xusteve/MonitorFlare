@@ -96,7 +96,8 @@
       "port": "Vérification de port",
       "ssl": "Vérification SSL"
     },
-    "sslCheck": "Vérifier le certificat SSL"
+    "sslCheck": "Vérifier le certificat SSL",
+    "viewDetails": "Voir les détails"
   },
   "uptimeBar": {
     "noData": "Aucune donnée",
@@ -606,5 +607,41 @@
     "syncing": "SYNCHRO",
     "statusPage": "PAGE DE STATUT",
     "admin": "Console d'administration"
+  },
+  "monitorDetail": {
+    "back": "Retour au statut",
+    "refresh": "Actualiser",
+    "notFound": "Moniteur introuvable",
+    "lastCheck": "Dernière vérification {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "Domaine {days} · {date}",
+    "sslChecked": "SSL vérifié",
+    "uptime90": "Disponibilité (90 jours)",
+    "latencyTrend": "Tendance de latence",
+    "now": "maintenant",
+    "noData": "Aucune donnée",
+    "recentChecks": "Vérifications récentes",
+    "recentChecksCount": "{count} enregistrements",
+    "colTime": "Heure",
+    "colStatus": "Statut",
+    "colCode": "Code",
+    "colLatency": "Latence",
+    "colReason": "Raison",
+    "statusUp": "En ligne",
+    "statusDown": "Hors ligne",
+    "relatedIncidents": "Incidents liés",
+    "resolvedAt": "Résolu à {time}",
+    "incidentResolved": "Résolu",
+    "incidentScheduled": "Planifié",
+    "incidentCritical": "Critique",
+    "incidentWarning": "Avertissement",
+    "incidentInfo": "Info",
+    "stat24h": "24 heures",
+    "stat7d": "7 jours",
+    "stat30d": "30 jours",
+    "stat90d": "90 jours",
+    "range24h": "24h",
+    "range7d": "7j",
+    "range30d": "30j"
   }
 }

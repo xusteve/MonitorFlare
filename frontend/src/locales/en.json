@@ -96,7 +96,8 @@
       "port": "Port check",
       "ssl": "SSL check"
     },
-    "sslCheck": "Check SSL certificate"
+    "sslCheck": "Check SSL certificate",
+    "viewDetails": "View details"
   },
   "uptimeBar": {
     "noData": "No data",
@@ -606,5 +607,41 @@
     "syncing": "SYNCING",
     "statusPage": "STATUS PAGE",
     "admin": "Admin Console"
+  },
+  "monitorDetail": {
+    "back": "Back to status",
+    "refresh": "Refresh",
+    "notFound": "Monitor not found",
+    "lastCheck": "Last checked {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "Domain {days} · {date}",
+    "sslChecked": "SSL checked",
+    "uptime90": "Uptime (90 days)",
+    "latencyTrend": "Latency trend",
+    "now": "now",
+    "noData": "No data available yet",
+    "recentChecks": "Recent checks",
+    "recentChecksCount": "{count} records",
+    "colTime": "Time",
+    "colStatus": "Status",
+    "colCode": "Code",
+    "colLatency": "Latency",
+    "colReason": "Reason",
+    "statusUp": "Up",
+    "statusDown": "Down",
+    "relatedIncidents": "Related incidents",
+    "resolvedAt": "Resolved at {time}",
+    "incidentResolved": "Resolved",
+    "incidentScheduled": "Scheduled",
+    "incidentCritical": "Critical",
+    "incidentWarning": "Warning",
+    "incidentInfo": "Info",
+    "stat24h": "24 hours",
+    "stat7d": "7 days",
+    "stat30d": "30 days",
+    "stat90d": "90 days",
+    "range24h": "24h",
+    "range7d": "7d",
+    "range30d": "30d"
   }
 }

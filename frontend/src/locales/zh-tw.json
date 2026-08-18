@@ -96,7 +96,8 @@
       "port": "端口檢查",
       "ssl": "SSL 檢查"
     },
-    "sslCheck": "檢查 SSL 憑證"
+    "sslCheck": "檢查 SSL 憑證",
+    "viewDetails": "查看詳情"
   },
   "uptimeBar": {
     "noData": "無資料",
@@ -606,5 +607,41 @@
     "syncing": "同步中",
     "statusPage": "狀態頁",
     "admin": "管理後臺"
+  },
+  "monitorDetail": {
+    "back": "返回狀態頁",
+    "refresh": "重新整理",
+    "notFound": "找不到該監控",
+    "lastCheck": "上次檢查 {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "網域 {days} · {date}",
+    "sslChecked": "已檢查 SSL",
+    "uptime90": "可用率(近 90 天)",
+    "latencyTrend": "延遲趨勢",
+    "now": "現在",
+    "noData": "暫無資料",
+    "recentChecks": "最近檢查",
+    "recentChecksCount": "{count} 筆",
+    "colTime": "時間",
+    "colStatus": "狀態",
+    "colCode": "狀態碼",
+    "colLatency": "延遲",
+    "colReason": "原因",
+    "statusUp": "正常",
+    "statusDown": "故障",
+    "relatedIncidents": "相關事件",
+    "resolvedAt": "已於 {time} 解決",
+    "incidentResolved": "已解決",
+    "incidentScheduled": "已排程",
+    "incidentCritical": "嚴重",
+    "incidentWarning": "警告",
+    "incidentInfo": "通知",
+    "stat24h": "近 24 小時",
+    "stat7d": "近 7 天",
+    "stat30d": "近 30 天",
+    "stat90d": "近 90 天",
+    "range24h": "24h",
+    "range7d": "7d",
+    "range30d": "30d"
   }
 }

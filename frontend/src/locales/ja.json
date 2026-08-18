@@ -96,7 +96,8 @@
       "port": "ポートチェック",
       "ssl": "SSL チェック"
     },
-    "sslCheck": "SSL証明書を確認"
+    "sslCheck": "SSL証明書を確認",
+    "viewDetails": "詳細を見る"
   },
   "uptimeBar": {
     "noData": "データなし",
@@ -606,5 +607,41 @@
     "syncing": "同期中",
     "statusPage": "ステータスページ",
     "admin": "管理コンソール"
+  },
+  "monitorDetail": {
+    "back": "ステータスへ戻る",
+    "refresh": "更新",
+    "notFound": "モニターが見つかりません",
+    "lastCheck": "最終チェック {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "ドメイン {days} · {date}",
+    "sslChecked": "SSL 確認済み",
+    "uptime90": "稼働率(90日間)",
+    "latencyTrend": "応答時間の推移",
+    "now": "現在",
+    "noData": "データがありません",
+    "recentChecks": "最近のチェック",
+    "recentChecksCount": "{count} 件",
+    "colTime": "時刻",
+    "colStatus": "状態",
+    "colCode": "コード",
+    "colLatency": "遅延",
+    "colReason": "理由",
+    "statusUp": "正常",
+    "statusDown": "障害",
+    "relatedIncidents": "関連インシデント",
+    "resolvedAt": "{time} に解決",
+    "incidentResolved": "解決済み",
+    "incidentScheduled": "予定",
+    "incidentCritical": "重大",
+    "incidentWarning": "警告",
+    "incidentInfo": "通知",
+    "stat24h": "24時間",
+    "stat7d": "7日間",
+    "stat30d": "30日間",
+    "stat90d": "90日間",
+    "range24h": "24h",
+    "range7d": "7d",
+    "range30d": "30d"
   }
 }

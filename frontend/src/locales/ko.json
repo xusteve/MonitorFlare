@@ -96,7 +96,8 @@
       "port": "포트 확인",
       "ssl": "SSL 확인"
     },
-    "sslCheck": "SSL 인증서 확인"
+    "sslCheck": "SSL 인증서 확인",
+    "viewDetails": "상세 보기"
   },
   "uptimeBar": {
     "noData": "데이터 없음",
@@ -606,5 +607,41 @@
     "syncing": "동기화 중",
     "statusPage": "상태 페이지",
     "admin": "관리 콘솔"
+  },
+  "monitorDetail": {
+    "back": "상태 페이지로",
+    "refresh": "새로고침",
+    "notFound": "모니터를 찾을 수 없습니다",
+    "lastCheck": "마지막 확인 {time}",
+    "sslExpiry": "SSL {days} · {date}",
+    "domainExpiry": "도메인 {days} · {date}",
+    "sslChecked": "SSL 확인됨",
+    "uptime90": "가동률(90일)",
+    "latencyTrend": "지연 추이",
+    "now": "현재",
+    "noData": "데이터가 없습니다",
+    "recentChecks": "최근 확인",
+    "recentChecksCount": "{count}개",
+    "colTime": "시간",
+    "colStatus": "상태",
+    "colCode": "코드",
+    "colLatency": "지연",
+    "colReason": "사유",
+    "statusUp": "정상",
+    "statusDown": "장애",
+    "relatedIncidents": "관련 인시던트",
+    "resolvedAt": "{time} 해결됨",
+    "incidentResolved": "해결됨",
+    "incidentScheduled": "예정",
+    "incidentCritical": "심각",
+    "incidentWarning": "경고",
+    "incidentInfo": "안내",
+    "stat24h": "24시간",
+    "stat7d": "7일",
+    "stat30d": "30일",
+    "stat90d": "90일",
+    "range24h": "24h",
+    "range7d": "7d",
+    "range30d": "30d"
   }
 }

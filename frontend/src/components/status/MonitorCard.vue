@@ -22,11 +22,15 @@
             <div v-if="monitor.status === 'UP' && !monitor.paused" class="absolute inset-0 rounded-full bg-emerald-400/40 pulse-dot"></div>
           </div>
           <div class="flex items-center gap-1.5 min-w-0">
-            <h3 class="font-bold text-slate-900 dark:text-white text-base truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">{{ monitor.name }}</h3>
-            <span class="type-badge shrink-0" :title="$t('monitorCard.type.' + typeKey)">
-              <span class="type-badge-icon"><i :class="typeIcon"></i></span>
-              <span class="type-badge-label">{{ typeLabel }}</span>
-            </span>
+            <router-link :to="`/monitor/${monitor.id}`" :title="$t('monitorCard.viewDetails')"
+              class="flex items-center gap-1.5 min-w-0 group/name">
+              <h3 class="font-bold text-slate-900 dark:text-white text-base truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">{{ monitor.name }}</h3>
+              <span class="type-badge shrink-0" :title="$t('monitorCard.type.' + typeKey)">
+                <span class="type-badge-icon"><i :class="typeIcon"></i></span>
+                <span class="type-badge-label">{{ typeLabel }}</span>
+              </span>
+              <svg class="w-3 h-3 text-slate-300 dark:text-slate-600 shrink-0 opacity-0 group-hover/name:opacity-100 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 transition-all duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+            </router-link>
           </div>
         </div>
 

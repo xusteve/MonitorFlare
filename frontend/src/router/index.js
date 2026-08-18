@@ -7,6 +7,11 @@ const routes = [
         component: () => import('../views/StatusPage.vue'),
     },
     {
+        path: '/monitor/:id',
+        name: 'MonitorDetail',
+        component: () => import('../views/MonitorDetail.vue'),
+    },
+    {
         path: '/magic',
         name: 'MagicLink',
         component: () => import('../components/admin/MagicLinkHandler.vue'),

@@ -315,6 +315,105 @@ app.get('/monitors/public/details', async (c) => {
   }
 });
 
+// 单监控公开详情:基础信息 + uptime + 90 天历史 + 日志 + 事件
+// 支持 ?range=24h|7d|30d(延迟序列,默认 24h)与 ?limit=(日志条数,默认 50,上限 200)
+app.get('/monitors/public/:id', async (c) => {
+  try {
+    const id = Number(c.req.param('id'));
+    if (!Number.isInteger(id) || id <= 0) return c.json({ error: 'Invalid monitor id' }, 400);
+
+    const monitor = await c.env.DB.prepare(
+      'SELECT id, name, url, type, status, last_check, cert_expiry, domain_expiry, paused, tags, check_ssl, method, interval, keyword, created_at FROM monitors WHERE id = ?'
+    ).bind(id).first();
+    if (!monitor) return c.json({ error: 'Monitor not found' }, 404);
+
+    await c.env.DB.prepare(`CREATE TABLE IF NOT EXISTS daily_uptime (
+      monitor_id INTEGER NOT NULL, date TEXT NOT NULL,
+      total_checks INTEGER DEFAULT 0, successful_checks INTEGER DEFAULT 0,
+      avg_latency INTEGER DEFAULT 0, PRIMARY KEY (monitor_id, date)
+    )`).run();
+
+    const cnt = await c.env.DB.prepare('SELECT COUNT(*) as c FROM daily_uptime').first<{ c: number }>();
+    if (cnt && cnt.c === 0) {
+      await c.env.DB.prepare(`
+        INSERT OR IGNORE INTO daily_uptime (monitor_id, date, total_checks, successful_checks, avg_latency)
+        SELECT monitor_id, date(created_at), COUNT(*), SUM(CASE WHEN is_fail=0 THEN 1 ELSE 0 END),
+               COALESCE(CAST(AVG(CASE WHEN is_fail=0 THEN latency END) AS INTEGER), 0)
+        FROM logs
+        WHERE created_at >= date('now','-90 days') AND created_at < date('now')
+        GROUP BY monitor_id, date(created_at)
+      `).run();
+    }
+
+    const { results: dailyRows } = await c.env.DB.prepare(
+      'SELECT date, total_checks, successful_checks FROM daily_uptime WHERE monitor_id = ? AND date >= date(\'now\',\'-90 days\') ORDER BY date'
+    ).bind(id).all();
+
+    const upt = await c.env.DB.prepare(`
+      SELECT
+        SUM(CASE WHEN created_at >= datetime('now','-24 hours') THEN 1 ELSE 0 END) as t24,
+        SUM(CASE WHEN created_at >= datetime('now','-24 hours') AND is_fail=0 THEN 1 ELSE 0 END) as s24,
+        SUM(CASE WHEN created_at >= datetime('now','-7 days') THEN 1 ELSE 0 END) as t7,
+        SUM(CASE WHEN created_at >= datetime('now','-7 days') AND is_fail=0 THEN 1 ELSE 0 END) as s7,
+        SUM(CASE WHEN created_at >= datetime('now','-30 days') THEN 1 ELSE 0 END) as t30,
+        SUM(CASE WHEN created_at >= datetime('now','-30 days') AND is_fail=0 THEN 1 ELSE 0 END) as s30
+      FROM logs WHERE monitor_id = ? AND created_at >= datetime('now','-30 days')
+    `).bind(id).first();
+
+    const d90 = await c.env.DB.prepare(
+      "SELECT SUM(total_checks) as t, SUM(successful_checks) as s FROM daily_uptime WHERE monitor_id = ? AND date >= date('now','-90 days') AND date < date('now')"
+    ).bind(id).first();
+    const today = await c.env.DB.prepare(
+      "SELECT COUNT(*) as t, SUM(CASE WHEN is_fail=0 THEN 1 ELSE 0 END) as s FROM logs WHERE monitor_id = ? AND created_at >= date('now')"
+    ).bind(id).first();
+
+    const pct = (t?: number, s?: number) => t && t > 0 ? Number(((s! / t) * 100).toFixed(1)) : null;
+    const t90 = ((d90?.t as number) || 0) + ((today?.t as number) || 0);
+    const s90 = ((d90?.s as number) || 0) + ((today?.s as number) || 0);
+
+    const range = (c.req.query('range') || '24h');
+    const hours = range === '7d' ? 168 : range === '30d' ? 720 : 24;
+    const maxPts = range === '7d' ? 1000 : range === '30d' ? 1500 : 288;
+    const { results: rawSeries } = await c.env.DB.prepare(
+      'SELECT created_at, latency FROM logs WHERE monitor_id = ? AND is_fail = 0 AND created_at >= datetime(\'now\', ?) ORDER BY created_at ASC'
+    ).bind(id, `-${hours} hours`).all();
+    const step = rawSeries && rawSeries.length > maxPts ? Math.ceil(rawSeries.length / maxPts) : 1;
+    const latencySeries: { created_at: string; latency: number }[] = [];
+    if (rawSeries) {
+      for (let i = 0; i < rawSeries.length; i += step) {
+        latencySeries.push({ created_at: rawSeries[i].created_at as string, latency: rawSeries[i].latency as number });
+      }
+    }
+
+    const limit = Math.min(Math.max(Number(c.req.query('limit') || 50), 1), 200);
+    const { results: logs } = await c.env.DB.prepare(
+      'SELECT id, created_at, status_code, latency, is_fail, reason FROM logs WHERE monitor_id = ? ORDER BY created_at DESC LIMIT ?'
+    ).bind(id, limit).all();
+
+    const { results: allIncidents } = await c.env.DB.prepare(
+      'SELECT * FROM incidents ORDER BY created_at DESC LIMIT 200'
+    ).all<Incident>();
+    const incidents = (allIncidents || []).filter(inc => {
+      if (!inc.affected_monitors) return false;
+      return inc.affected_monitors.split(',').map(x => x.trim()).filter(Boolean).includes(String(id));
+    });
+
+    const enriched = {
+      ...monitor,
+      latency: latencySeries.length > 0 ? latencySeries[latencySeries.length - 1].latency : null,
+      uptime_24h: pct(upt?.t24 as number, upt?.s24 as number),
+      uptime_7d: pct(upt?.t7 as number, upt?.s7 as number),
+      uptime_30d: pct(upt?.t30 as number, upt?.s30 as number),
+      uptime_90d: pct(t90, s90),
+      daily_stats: (dailyRows || []).map(r => ({ date: r.date as string, up: r.successful_checks as number, total: r.total_checks as number })),
+    };
+
+    return c.json({ monitor: enriched, logs: logs || [], latency_series: latencySeries, incidents });
+  } catch (e: unknown) {
+    return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
+  }
+});
+
 app.post('/monitors', async (c) => {
   try {
     const body = await c.req.json<Partial<Monitor>>();
