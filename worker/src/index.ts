@@ -49,7 +49,7 @@ app.use('/*', cors({
 const PUBLIC_PATHS = [
   '/auth/', '/monitors/public', '/api/status', '/feed.xml', '/api/subscribe', '/api/unsubscribe', '/webhooks/',
 ];
-const PROTECTED_PREFIXES = ['/monitors', '/notification-channels', '/incidents', '/settings', '/test-alert', '/health', '/api-keys', '/backup', '/api/v1'];
+const PROTECTED_PREFIXES = ['/monitors', '/notification-channels', '/incidents', '/settings', '/test-alert', '/health', '/api-keys', '/backup', '/api/v1', '/v1'];
 
 // 私密模式下需锁定的公开接口(前缀匹配)
 const STATUS_LOCK_PATHS = [
@@ -896,7 +896,10 @@ function isSensitiveSettingKey(key: string): boolean {
   return SENSITIVE_SETTING_KEYS.includes(key) || /(password|secret|token|api[_-]?key)/i.test(key);
 }
 
-app.get('/api/v1/monitors', async (c) => {
+// /api/v1 子应用(同时挂载到 /api/v1 与 /v1,兼容 Pages 代理路径)
+const v1App = new Hono<{ Bindings: Bindings }>();
+
+v1App.get('/monitors', async (c) => {
   try {
     const { results } = await c.env.DB.prepare(`SELECT ${MONITOR_COLUMNS} FROM monitors ORDER BY sort_order ASC, created_at ASC`).all();
     return c.json((results || []).map(maskMonitorSensitive));
@@ -905,7 +908,7 @@ app.get('/api/v1/monitors', async (c) => {
   }
 });
 
-app.get('/api/v1/logs', async (c) => {
+v1App.get('/logs', async (c) => {
   try {
     const monitorId = Number(c.req.query('monitor_id') || 0);
     const since = c.req.query('since') || '';
@@ -930,7 +933,7 @@ app.get('/api/v1/logs', async (c) => {
   }
 });
 
-app.get('/api/v1/incidents', async (c) => {
+v1App.get('/incidents', async (c) => {
   try {
     const limit = Math.min(Math.max(Number(c.req.query('limit') || 500), 1), 1000);
     const { results } = await c.env.DB.prepare('SELECT * FROM incidents ORDER BY created_at DESC LIMIT ?').bind(limit).all();
@@ -940,7 +943,7 @@ app.get('/api/v1/incidents', async (c) => {
   }
 });
 
-app.get('/api/v1/uptime', async (c) => {
+v1App.get('/uptime', async (c) => {
   try {
     const days = Math.min(Math.max(Number(c.req.query('days') || 30), 1), 365);
     const sinceDate = `date('now','-${days - 1} days')`;
@@ -969,7 +972,7 @@ app.get('/api/v1/uptime', async (c) => {
   }
 });
 
-app.get('/api/v1/export', async (c) => {
+v1App.get('/export', async (c) => {
   try {
     const limit = Math.min(Math.max(Number(c.req.query('limit') || 1000), 1), 5000);
     const { results: monitors } = await c.env.DB.prepare(`SELECT ${MONITOR_COLUMNS} FROM monitors ORDER BY sort_order ASC`).all();
@@ -992,6 +995,10 @@ app.get('/api/v1/export', async (c) => {
     return c.json({ error: e instanceof Error ? e.message : 'Unknown error' }, 500);
   }
 });
+
+// 双前缀挂载:直连 Worker(/api/v1)与经 Pages 代理(/v1)
+app.route('/api/v1', v1App);
+app.route('/v1', v1App);
 
 // ============================================================
 // 备份 / 恢复
