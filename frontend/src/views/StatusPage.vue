@@ -8,7 +8,7 @@
 
       <template v-else>
       <!-- 英雄状态区 -->
-      <HeroBanner v-else-if="monitors.length > 0" :monitors="monitors" :activeMonitors="activeMonitors"
+      <HeroBanner v-if="monitors.length > 0" :monitors="monitors" :activeMonitors="activeMonitors"
         :allUp="allUp" :hasRetrying="hasRetrying" :hasDown="hasDown" :avgLatency="avgLatency" :error="error"
         @retry="fetchMonitors" />
 
@@ -18,7 +18,7 @@
       </div>
 
       <!-- 无监控项 -->
-      <div v-else-if="!loading && monitors.length === 0" class="text-center py-24 glass rounded-2xl border border-dashed border-slate-200 dark:border-white/[0.06] fade-up-d2">
+      <div v-if="!loading && monitors.length === 0" class="text-center py-24 glass rounded-2xl border border-dashed border-slate-200 dark:border-white/[0.06] fade-up-d2">
         <div class="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-white/[0.03] flex items-center justify-center mx-auto mb-4">
           <svg class="w-8 h-8 text-slate-300 dark:text-slate-700" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z"/>
