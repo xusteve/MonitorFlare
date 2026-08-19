@@ -532,7 +532,14 @@
     "delete": "Löschen",
     "deleted": "Schlüssel gelöscht",
     "usageTitle": "Beispiele",
-    "usageHint": "Schlüssel als Bearer-Token verwenden."
+    "usageHint": "Schlüssel als Bearer-Token verwenden.",
+    "usageComments": [
+      "Alle Monitore auflisten (volle Felder)",
+      "Check-Logs abfragen (Paginierung + Zeitfilter)",
+      "Alle Vorfälle",
+      "Tägliche Verfügbarkeitsübersicht (Standard 30 Tage)",
+      "Kompletter Export mit einem Klick"
+    ]
   },
   "backup": {
     "title": "Backup & Wiederherstellung",

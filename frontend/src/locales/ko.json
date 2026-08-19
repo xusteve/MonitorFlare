@@ -532,7 +532,14 @@
     "delete": "삭제",
     "deleted": "키 삭제됨",
     "usageTitle": "사용 예시",
-    "usageHint": "키를 Bearer token으로 사용해 API를 호출하세요."
+    "usageHint": "키를 Bearer token으로 사용해 API를 호출하세요.",
+    "usageComments": [
+      "모든 모니터 나열(전체 필드)",
+      "체크 로그 조회(페이지네이션 + 시간 필터)",
+      "모든 인시던트",
+      "일일 가동률 요약(기본 30일)",
+      "원클릭 전체 내보내기"
+    ]
   },
   "backup": {
     "title": "백업 및 복원",

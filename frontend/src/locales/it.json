@@ -532,7 +532,14 @@
     "delete": "Elimina",
     "deleted": "Chiave eliminata",
     "usageTitle": "Esempi",
-    "usageHint": "Usa la chiave come token Bearer."
+    "usageHint": "Usa la chiave come token Bearer.",
+    "usageComments": [
+      "Elenca tutti i monitor (campi completi)",
+      "Interroga i log di controllo (paginazione + filtro tempo)",
+      "Tutti gli incidenti",
+      "Riepilogo disponibilità giornaliera (default 30 giorni)",
+      "Export completo con un clic"
+    ]
   },
   "backup": {
     "title": "Backup e ripristino",

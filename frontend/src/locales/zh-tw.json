@@ -532,7 +532,14 @@
     "delete": "刪除",
     "deleted": "金鑰已刪除",
     "usageTitle": "用法範例",
-    "usageHint": "將金鑰作為 Bearer token 呼叫介面。"
+    "usageHint": "將金鑰作為 Bearer token 呼叫介面。",
+    "usageComments": [
+      "列出所有監控(全欄位)",
+      "查詢檢查日誌(分頁 + 時間過濾)",
+      "全部事件",
+      "每日可用率彙總(預設 30 天)",
+      "一鍵完整匯出"
+    ]
   },
   "backup": {
     "title": "備份與恢復",

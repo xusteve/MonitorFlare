@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuth } from '../../composables/useAuth';
 import { useToast } from '../../composables/useToast';
@@ -105,22 +105,26 @@ const copied = ref(false);
 
 const authFetch = async (url, opts = {}) => fetchT(url, { ...opts, headers: { ...opts.headers, 'Authorization': `Bearer ${storedToken.value}` } });
 
-const usageExample = `# 列出所有监控(全字段)
+const usageExample = computed(() => {
+    const c = t('apiKeys.usageComments');
+    const o = location.origin;
+    return `# ${c[0]}
 curl -H "Authorization: Bearer ut_your_key" \\
-  ${location.origin}/api/v1/monitors
+  ${o}/api/v1/monitors
 
-# 查询检查日志(分页 + 时间过滤)
+# ${c[1]}
 curl -H "Authorization: Bearer ut_your_key" \\
-  "${location.origin}/api/v1/logs?monitor_id=1&limit=100&offset=0&since=2026-01-01"
+  "${o}/api/v1/logs?monitor_id=1&limit=100&offset=0&since=2026-01-01"
 
-# 全部事件
-curl -H "Authorization: Bearer ut_your_key" ${location.origin}/api/v1/incidents
+# ${c[2]}
+curl -H "Authorization: Bearer ut_your_key" ${o}/api/v1/incidents
 
-# 每日可用率汇总(默认 30 天)
-curl -H "Authorization: Bearer ut_your_key" "${location.origin}/api/v1/uptime?days=90"
+# ${c[3]}
+curl -H "Authorization: Bearer ut_your_key" "${o}/api/v1/uptime?days=90"
 
-# 一键完整导出
-curl -H "Authorization: Bearer ut_your_key" ${location.origin}/api/v1/export`;
+# ${c[4]}
+curl -H "Authorization: Bearer ut_your_key" ${o}/api/v1/export`;
+});
 
 const fetchKeys = async () => {
     try {

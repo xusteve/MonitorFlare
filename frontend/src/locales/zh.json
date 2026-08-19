@@ -532,7 +532,14 @@
     "delete": "删除",
     "deleted": "密钥已删除",
     "usageTitle": "用法示例",
-    "usageHint": "将密钥作为 Bearer token 调用接口。"
+    "usageHint": "将密钥作为 Bearer token 调用接口。",
+    "usageComments": [
+      "列出所有监控(全字段)",
+      "查询检查日志(分页 + 时间过滤)",
+      "全部事件",
+      "每日可用率汇总(默认 30 天)",
+      "一键完整导出"
+    ]
   },
   "backup": {
     "title": "备份与恢复",
