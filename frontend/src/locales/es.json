@@ -533,13 +533,11 @@
     "deleted": "Clave eliminada",
     "usageTitle": "Ejemplos",
     "usageHint": "Usa la clave como token Bearer.",
-    "usageComments": [
-      "Listar todos los monitores (campos completos)",
-      "Consultar registros (paginación + filtro de tiempo)",
-      "Todos los incidentes",
-      "Resumen de disponibilidad diaria (30 días por defecto)",
-      "Exportación completa con un clic"
-    ]
+    "usageComment1": "Listar todos los monitores (campos completos)",
+    "usageComment2": "Consultar registros (paginación + filtro de tiempo)",
+    "usageComment3": "Todos los incidentes",
+    "usageComment4": "Resumen de disponibilidad diaria (30 días por defecto)",
+    "usageComment5": "Exportación completa con un clic"
   },
   "backup": {
     "title": "Copia de seguridad y restauración",

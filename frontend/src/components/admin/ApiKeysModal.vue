@@ -106,23 +106,22 @@ const copied = ref(false);
 const authFetch = async (url, opts = {}) => fetchT(url, { ...opts, headers: { ...opts.headers, 'Authorization': `Bearer ${storedToken.value}` } });
 
 const usageExample = computed(() => {
-    const c = t('apiKeys.usageComments');
     const o = location.origin;
-    return `# ${c[0]}
+    return `# ${t('apiKeys.usageComment1')}
 curl -H "Authorization: Bearer ut_your_key" \\
   ${o}/api/v1/monitors
 
-# ${c[1]}
+# ${t('apiKeys.usageComment2')}
 curl -H "Authorization: Bearer ut_your_key" \\
   "${o}/api/v1/logs?monitor_id=1&limit=100&offset=0&since=2026-01-01"
 
-# ${c[2]}
+# ${t('apiKeys.usageComment3')}
 curl -H "Authorization: Bearer ut_your_key" ${o}/api/v1/incidents
 
-# ${c[3]}
+# ${t('apiKeys.usageComment4')}
 curl -H "Authorization: Bearer ut_your_key" "${o}/api/v1/uptime?days=90"
 
-# ${c[4]}
+# ${t('apiKeys.usageComment5')}
 curl -H "Authorization: Bearer ut_your_key" ${o}/api/v1/export`;
 });
 

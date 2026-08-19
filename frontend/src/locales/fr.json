@@ -533,13 +533,11 @@
     "deleted": "Clé supprimée",
     "usageTitle": "Exemples",
     "usageHint": "Utilisez la clé comme jeton Bearer.",
-    "usageComments": [
-      "Lister tous les moniteurs (champs complets)",
-      "Interroger les journaux (pagination + filtre temporel)",
-      "Tous les incidents",
-      "Résumé de disponibilité quotidienne (30 jours par défaut)",
-      "Export complet en un clic"
-    ]
+    "usageComment1": "Lister tous les moniteurs (champs complets)",
+    "usageComment2": "Interroger les journaux (pagination + filtre temporel)",
+    "usageComment3": "Tous les incidents",
+    "usageComment4": "Résumé de disponibilité quotidienne (30 jours par défaut)",
+    "usageComment5": "Export complet en un clic"
   },
   "backup": {
     "title": "Sauvegarde et restauration",

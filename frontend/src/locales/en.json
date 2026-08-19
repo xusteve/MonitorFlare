@@ -533,13 +533,11 @@
     "deleted": "Key deleted",
     "usageTitle": "Usage examples",
     "usageHint": "Use the key as Bearer token to call the API endpoints.",
-    "usageComments": [
-      "List all monitors (full fields)",
-      "Query check logs (pagination + time filter)",
-      "All incidents",
-      "Daily uptime summary (default 30 days)",
-      "One-click full export"
-    ]
+    "usageComment1": "List all monitors (full fields)",
+    "usageComment2": "Query check logs (pagination + time filter)",
+    "usageComment3": "All incidents",
+    "usageComment4": "Daily uptime summary (default 30 days)",
+    "usageComment5": "One-click full export"
   },
   "backup": {
     "title": "Backup & Restore",
