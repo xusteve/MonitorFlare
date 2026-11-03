@@ -65,6 +65,7 @@ const INIT_STATEMENTS: string[] = [
     avg_latency INTEGER DEFAULT 0,
     PRIMARY KEY (monitor_id, date)
   )`,
+  `CREATE INDEX IF NOT EXISTS idx_daily_uptime_date ON daily_uptime(date)`,
   `CREATE TABLE IF NOT EXISTS subscriptions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE, token TEXT NOT NULL,
@@ -95,6 +96,11 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   alert_template_error_rate: 'Error rate alert: {error_rate}% in last 5 minutes, threshold {threshold}%',
 };
 
+// 已有库也需要补上的索引(IF NOT EXISTS 幂等,每个 isolate 只跑一次)
+const MIGRATE_STATEMENTS: string[] = [
+  `CREATE INDEX IF NOT EXISTS idx_daily_uptime_date ON daily_uptime(date)`,
+];
+
 let initPromise: Promise<boolean> | null = null;
 
 export async function ensureInitialized(env: Bindings): Promise<boolean> {
@@ -111,6 +117,10 @@ export async function ensureInitialized(env: Bindings): Promise<boolean> {
         // 确保默认设置存在(幂等)
         const stmt = env.DB.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)');
         await env.DB.batch(Object.entries(DEFAULT_SETTINGS).map(([k, v]) => stmt.bind(k, v)));
+        // 兼容旧库:补索引
+        for (const sql of MIGRATE_STATEMENTS) {
+          await env.DB.prepare(sql).run();
+        }
         // 兼容旧库:补列
         await ensureColumn(env, 'monitors', 'type', "TEXT DEFAULT 'http'");
         await ensureColumn(env, 'monitors', 'config', 'TEXT');

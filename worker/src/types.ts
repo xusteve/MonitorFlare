@@ -109,6 +109,7 @@ export type Bindings = {
   ALLOWED_ORIGIN?: string;
   SESSION_TTL_HOURS?: string;
   BASE_URL?: string;
+  LOG_BACKUP_DAYS?: string;
 };
 
 // 检查结果

@@ -242,7 +242,7 @@ const subscribe = async () => {
     }
     subscribing.value = true;
     try {
-        const r = await fetchT(`${API_BASE}/api/subscribe`, {
+        const r = await fetchT(`${API_BASE}/subscribe`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: subEmail.value }),
@@ -260,11 +260,21 @@ const subscribe = async () => {
 };
 
 let _timer;
+const onVisibilityChange = () => {
+    if (!document.hidden && !locked.value) fetchMonitors();
+};
 onMounted(() => {
     fetchMonitors();
     fetchIncidents();
     fetchSettings();
-    _timer = setInterval(() => { if (!locked.value) fetchMonitors(); }, 30000);
+    _timer = setInterval(() => {
+        if (locked.value || document.hidden || loading.value) return;
+        fetchMonitors();
+    }, 60000);
+    document.addEventListener('visibilitychange', onVisibilityChange);
 });
-onUnmounted(() => clearInterval(_timer));
+onUnmounted(() => {
+    clearInterval(_timer);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+});
 </script>

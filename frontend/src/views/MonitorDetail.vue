@@ -466,10 +466,20 @@ const manualRefresh = async () => {
 };
 
 let _timer;
+const onVisibilityChange = () => {
+    if (!document.hidden && !locked.value) fetchDetail();
+};
 onMounted(() => {
     fetchDetail();
     fetchSettings();
-    _timer = setInterval(() => { if (!locked.value) fetchDetail(); }, 30000);
+    _timer = setInterval(() => {
+        if (locked.value || document.hidden || loading.value) return;
+        fetchDetail();
+    }, 60000);
+    document.addEventListener('visibilitychange', onVisibilityChange);
 });
-onUnmounted(() => clearInterval(_timer));
+onUnmounted(() => {
+    clearInterval(_timer);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+});
 </script>
